@@ -1,0 +1,97 @@
+{
+  "teams": [
+    {
+      "id": "team_platform",
+      "name": "Platform Engineering",
+      "purpose": "Core distributed backend infrastructure, payments processing, and API gateway services."
+    },
+    {
+      "id": "team_operations",
+      "name": "Operations & Leadership",
+      "purpose": "Cross-functional planning, strategic company execution, and company coordination."
+    },
+    {
+      "id": "team_tech_ops",
+      "name": "Technical Operations",
+      "purpose": "Company knowledge management, provenance maintenance, and fact validation."
+    },
+    {
+      "id": "team_core_systems",
+      "name": "Core Systems",
+      "purpose": "Data platform, legacy system migrations, and database infrastructure."
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj_payments_v2",
+      "name": "Payments API v2",
+      "description": "Next-generation transactional payment processing API and high-concurrency settlement engine.",
+      "status": "ACTIVE",
+      "source_id": "doc_payments_brief_v2"
+    },
+    {
+      "id": "proj_core_infra",
+      "name": "Core Platform Infrastructure",
+      "description": "Shared Kubernetes clusters, Redis clusters, and identity services.",
+      "status": "ACTIVE",
+      "source_id": "doc_payments_brief_v2"
+    }
+  ],
+  "services": [
+    {
+      "id": "svc_payments_settlement",
+      "name": "Payments Settlement Service",
+      "environment": "PRODUCTION_CANDIDATE",
+      "status": "AT_RISK",
+      "source_id": "doc_payments_brief_v2"
+    },
+    {
+      "id": "svc_auth_gateway",
+      "name": "Authentication Gateway",
+      "environment": "PRODUCTION",
+      "status": "HEALTHY",
+      "source_id": "doc_payments_brief_v2"
+    }
+  ],
+  "goals": [
+    {
+      "id": "goal_payments_readiness",
+      "title": "Prepare Payments API for the next release",
+      "description": "Verify release readiness of Payments API v2, identify the current accountable owner, explain unresolved release blockers and associated architectural decisions, and coordinate the required technical investigation.",
+      "status": "IN_PROGRESS",
+      "priority": "P0",
+      "created_by": "emp_chief_of_staff"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task_investigate_pay_104",
+      "title": "Investigate PAY-104 webhook race condition and specify distributed lock remediation",
+      "description": "Analyze Stripe latency retry pattern, evaluate ADR-0042 idempotency constraints, and prepare technical findings with acceptance criteria for mutex barrier before release sign-off.",
+      "status": "READY_FOR_ASSIGNMENT",
+      "priority": "P0",
+      "due_at": "2026-10-20T18:00:00Z",
+      "created_by": "emp_eng_manager"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "dec_adr_0042",
+      "question": "How to prevent double charges and duplicate payment transactions during checkout retries?",
+      "outcome": "ADR-0042: Mandated 48-hour UUID idempotency keys on client write operations with 5s distributed Redis mutex.",
+      "status": "ACCEPTED",
+      "decided_at": "2026-09-15T16:30:00Z",
+      "decided_by": "emp_engineer",
+      "source_id": "doc_adr_0042"
+    },
+    {
+      "id": "dec_ownership_transfer",
+      "question": "Who is the primary accountable technical owner of Payments API v2 and Payments Settlement Service?",
+      "outcome": "Ownership transferred from David Kim to Asha Patel to lead v2 concurrency architecture and rollout.",
+      "status": "ACTIVE",
+      "decided_at": "2026-09-28T09:30:00Z",
+      "decided_by": "emp_eng_manager",
+      "source_id": "src_chat_rollout"
+    }
+  ]
+}

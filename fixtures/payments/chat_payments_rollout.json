@@ -1,0 +1,42 @@
+{
+  "channel": "#payments-rollout",
+  "source_uri": "https://company-synthetic.slack.com/archives/C0812PAYROLL/p1727524800",
+  "synthetic_label": "SIMULATED_SLACK_CHANNEL",
+  "messages": [
+    {
+      "id": "msg_chat_001",
+      "author_id": "emp_prior_dev",
+      "author_name": "David Kim",
+      "source_created_at": "2026-08-15T14:10:00Z",
+      "body": "I am currently managing the Payments API legacy architecture and Payments Settlement Service while we spec out v2."
+    },
+    {
+      "id": "msg_chat_002",
+      "author_id": "emp_eng_manager",
+      "author_name": "Marcus Chen",
+      "source_created_at": "2026-09-28T09:30:00Z",
+      "body": "Team announcement: Effective today 2026-09-28, Asha Patel (@asha) is taking over as the official technical and operational owner of Payments API v2 and Payments Settlement Service. David Kim (@david) has transitioned to Core Systems. Please direct all release readiness and service reviews to Asha."
+    },
+    {
+      "id": "msg_chat_003",
+      "author_id": "emp_engineer",
+      "author_name": "Asha Patel",
+      "source_created_at": "2026-09-28T09:35:00Z",
+      "body": "Confirmed! Excited to lead Payments API v2. First priority is hardening settlement locks and resolving upstream gateway race conditions."
+    },
+    {
+      "id": "msg_chat_004",
+      "author_id": "emp_eng_manager",
+      "author_name": "Marcus Chen",
+      "source_created_at": "2026-10-05T16:15:00Z",
+      "body": "@asha Can you check ticket PAY-104? We have test alerts showing double-settlement risk during Stripe latency spikes. Is this an unresolved blocker for our Q4 release?"
+    },
+    {
+      "id": "msg_chat_005",
+      "author_id": "emp_engineer",
+      "author_name": "Asha Patel",
+      "source_created_at": "2026-10-05T16:22:00Z",
+      "body": "Yes, PAY-104 is an active release risk. ADR-0042 solved client idempotency with headers, but banking webhook retries arrive asynchronously before initial transactions finish committing. We need a dedicated distributed lock barrier on payment intent IDs. Without that worker-level mutex, releasing Payments v2 is unsafe."
+    }
+  ]
+}

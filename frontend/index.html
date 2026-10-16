@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company Brain — Multi-Agent AI on FalkorDB</title>
+  <meta name="description" content="Company Brain: An AI company whose employee-agents collaborate across connected company context using FalkorDB as canonical state.">
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Synthetic Notice Banner -->
+  <div class="synthetic-banner" id="syntheticBanner">
+    <span class="pulse-indicator"></span>
+    <strong>REVIEWER ENVIRONMENT:</strong> Preloaded synthetic dataset. Slack & GitHub records are simulated connectors with full provenance in FalkorDB. Zero login or external accounts required.
+  </div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo-group">
+        <div class="logo-icon">🧠</div>
+        <div>
+          <h1 class="logo-title">Company Brain</h1>
+          <span class="logo-subtitle">Multi-Agent Knowledge Graph Architecture</span>
+        </div>
+      </div>
+      <div class="db-badge" id="dbStatusBadge">
+        <span class="status-dot healthy"></span>
+        <span id="dbStatusText">FalkorDB: Connected</span>
+      </div>
+    </div>
+
+    <div class="header-center">
+      <div class="workspace-pill">
+        <span class="pill-label">Workspace:</span>
+        <span class="pill-val" id="wsLabel">ws_company_prime</span>
+      </div>
+      <div class="graph-stats-pill">
+        <span id="nodeCount">0</span> Nodes &bull; <span id="edgeCount">0</span> Relationships
+      </div>
+    </div>
+
+    <div class="header-right">
+      <button class="btn btn-secondary" id="resetBtn" title="Reset workspace to clean initial seed">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        Reset Demo
+      </button>
+      <button class="btn btn-primary" id="runStarterGoalBtn">
+        <span>⚡</span> Run Payments Goal
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-layout">
+    <!-- Left Column: Controls & Execution -->
+    <section class="left-pane">
+      
+      <!-- Goal Intake Card -->
+      <div class="card glass-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">🎯</span>
+            <h2>Company Objective & Coordinator</h2>
+          </div>
+          <span class="badge badge-accent">Autonomous Loop (Max 5 Turns)</span>
+        </div>
+
+        <div class="card-body">
+          <label for="goalInput" class="input-label">Company Goal:</label>
+          <textarea id="goalInput" class="goal-textarea" rows="3">Prepare Payments API for the next release. Find the current owner, explain the unresolved risk and the decision behind it, then coordinate the next investigation.</textarea>
+          
+          <div class="actions-row">
+            <button class="btn btn-primary" id="submitGoalBtn">
+              <span class="btn-spinner" id="btnSpinner"></span>
+              <span id="btnText">Coordinate Employees</span>
+            </button>
+            <button class="btn btn-outline" id="supersedeBtn" title="Demonstrate live fact replacement">
+              <span>⚡</span> Supersede Ownership
+            </button>
+            <button class="btn btn-outline" id="recallMemoryBtn" title="Test session memory without chat history">
+              <span>🧠</span> Recall Memory
+            </button>
+            <button class="btn btn-outline" id="generalityBtn" title="Run non-payments company workflow">
+              <span>🌐</span> Generality Check
+            </button>
+          </div>
+
+          <!-- Suggested Quick Queries -->
+          <div class="quick-questions">
+            <span class="quick-label">Grounded Queries:</span>
+            <div class="chips-container">
+              <button class="chip" data-query="owner">👤 Current Owner</button>
+              <button class="chip" data-query="risks">⚠️ Unresolved Blockers (PAY-104)</button>
+              <button class="chip" data-query="decisions">📜 Decision Rationale (ADR-0042)</button>
+              <button class="chip" data-query="multi-hop">🔗 Multi-Hop Path</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Execution Timeline -->
+      <div class="card glass-card timeline-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">🤝</span>
+            <h2>Employee Handoff Timeline</h2>
+          </div>
+          <div class="handoff-protocol-badge">
+            REQUEST &rarr; ACKNOWLEDGE &rarr; INVESTIGATE &rarr; REPORT &rarr; CLOSE
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div id="timelineContainer" class="timeline-container">
+            <div class="timeline-empty-state">
+              <div class="empty-icon">👥</div>
+              <p>No active workflow. Click <strong>Run Payments Goal</strong> above to observe Chief of Staff, Engineering Manager, Staff Engineer, and Knowledge Manager collaborate across FalkorDB.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deliverable Viewer Card -->
+      <div class="card glass-card deliverable-card" id="deliverableCard" style="display: none;">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">📄</span>
+            <h2>Saved Company Deliverable</h2>
+          </div>
+          <span class="badge badge-success" id="deliverableStatusBadge">COMPLETED</span>
+        </div>
+        <div class="card-body">
+          <div id="deliverableContent" class="deliverable-body"></div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Right Column: Graph Canvas & Provenance Citations -->
+    <section class="right-pane">
+      
+      <!-- Relationship Graph Visualization -->
+      <div class="card glass-card graph-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">🕸️</span>
+            <h2>FalkorDB Relationship Topology</h2>
+          </div>
+          <div class="graph-legend">
+            <span class="legend-dot emp-dot"></span> Employee
+            <span class="legend-dot proj-dot"></span> Project
+            <span class="legend-dot fact-dot"></span> Fact
+            <span class="legend-dot src-dot"></span> Source
+          </div>
+        </div>
+        <div class="card-body graph-canvas-container">
+          <svg id="graphSvg" class="graph-svg"></svg>
+          <div class="graph-overlay-info" id="graphOverlayInfo">
+            Click any node to inspect properties and provenance edges.
+          </div>
+        </div>
+      </div>
+
+      <!-- Verified Provenance & Citations Drawer -->
+      <div class="card glass-card citations-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">🔍</span>
+            <h2>Verified Evidence Citations</h2>
+          </div>
+          <span class="badge badge-info" id="citationCountBadge">0 Citations</span>
+        </div>
+        <div class="card-body">
+          <div id="citationsContainer" class="citations-list">
+            <div class="empty-citations">
+              <p>Claims generated by employee agents will automatically resolve to stored FalkorDB <code>Source</code> and <code>Evidence</code> locators here.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fact Supersession & Audit History -->
+      <div class="card glass-card history-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">⏱️</span>
+            <h2>Fact Temporal Validity & History</h2>
+          </div>
+          <span class="badge badge-warning">Audit Trail</span>
+        </div>
+        <div class="card-body">
+          <div id="historyContainer" class="history-list">
+            <!-- Dynamic history items -->
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Modal for Query Results / Inspections -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 id="modalTitle">Query Result</h3>
+        <button class="modal-close" id="modalCloseBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Content inserted dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

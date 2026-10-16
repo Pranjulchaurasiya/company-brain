@@ -1,0 +1,141 @@
+import json
+from typing import Dict, Any, Optional
+from fastapi import APIRouter, HTTPException, Query
+from pydantic import BaseModel
+
+from backend.config import DEFAULT_WORKSPACE_ID
+from backend.db.falkordb_client import db_client
+from backend.ingestion.importer import import_all_fixtures
+from backend.db.queries import (
+    get_current_owner,
+    get_ownership_history,
+    get_unresolved_risks,
+    get_decisions_for_project,
+    get_expertise_by_skill,
+    get_multi_hop_path,
+    get_all_employees,
+    get_graph_snapshot
+)
+from backend.agents.coordinator import Coordinator
+from backend.ingestion.freshness import supersede_ownership_fact, recall_cross_session_memory
+
+router = APIRouter(prefix="/api")
+
+class GoalRequest(BaseModel):
+    goal: str = "Prepare Payments API for the next release. Find the current owner, explain the unresolved risk and the decision behind it, then coordinate the next investigation."
+    project_id: str = "proj_payments_v2"
+    workspace_id: str = DEFAULT_WORKSPACE_ID
+
+class SupersedeRequest(BaseModel):
+    workspace_id: str = DEFAULT_WORKSPACE_ID
+    project_id: str = "proj_payments_v2"
+    new_owner_id: str = "emp_eng_manager"
+    announcement_text: Optional[str] = None
+
+@router.get("/health")
+def health():
+    return db_client.check_health()
+
+@router.post("/reset")
+def reset_demo(workspace_id: str = DEFAULT_WORKSPACE_ID):
+    """Restore the clean preloaded demo state with zero login or setup."""
+    db_client.reset_graph()
+    stats = import_all_fixtures(workspace_id=workspace_id)
+    return {
+        "status": "RESET_SUCCESS",
+        "message": "Demo workspace successfully reset to clean seeded state.",
+        "stats": stats
+    }
+
+@router.get("/workspace")
+def get_workspace_info(workspace_id: str = DEFAULT_WORKSPACE_ID):
+    employees = get_all_employees(workspace_id)
+    g = db_client.get_graph()
+    node_count = g.query("MATCH (n {workspace_id: $ws}) RETURN count(n)", {"ws": workspace_id}).result_set[0][0]
+    edge_count = g.query("MATCH (a {workspace_id: $ws})-[r]->(b {workspace_id: $ws}) RETURN count(r)", {"ws": workspace_id}).result_set[0][0]
+    return {
+        "workspace_id": workspace_id,
+        "node_count": node_count,
+        "edge_count": edge_count,
+        "employees": employees,
+        "synthetic_notice": "ALL DATA IS SYNTHETIC - SIMULATED SLACK, GITHUB, AND COMPANY WIKI"
+    }
+
+@router.get("/graph")
+def get_graph(workspace_id: str = DEFAULT_WORKSPACE_ID):
+    return get_graph_snapshot(workspace_id)
+
+@router.post("/workflow/run")
+def run_workflow(req: GoalRequest):
+    """Run the bounded multi-agent collaboration workflow for the given goal."""
+    coordinator = Coordinator(workspace_id=req.workspace_id)
+    result = coordinator.run_goal_workflow(goal_text=req.goal, project_id=req.project_id)
+    return result
+
+@router.get("/queries/owner")
+def query_owner(workspace_id: str = DEFAULT_WORKSPACE_ID, project_id: str = "proj_payments_v2"):
+    owner = get_current_owner(workspace_id, project_id)
+    history = get_ownership_history(workspace_id, project_id)
+    return {
+        "current_owner": owner,
+        "history": history
+    }
+
+@router.get("/queries/risks")
+def query_risks(workspace_id: str = DEFAULT_WORKSPACE_ID, project_id: str = "proj_payments_v2"):
+    return get_unresolved_risks(workspace_id, project_id)
+
+@router.get("/queries/decisions")
+def query_decisions(workspace_id: str = DEFAULT_WORKSPACE_ID, project_id: str = "proj_payments_v2"):
+    return get_decisions_for_project(workspace_id, project_id)
+
+@router.get("/queries/multi-hop")
+def query_multi_hop(workspace_id: str = DEFAULT_WORKSPACE_ID, project_id: str = "proj_payments_v2"):
+    return get_multi_hop_path(workspace_id, project_id)
+
+@router.post("/freshness/supersede")
+def supersede_fact(req: SupersedeRequest):
+    announcement = req.announcement_text or "Marcus Chen (@marcus) has temporarily assumed operational ownership of Payments API v2 during release audit."
+    res = supersede_ownership_fact(
+        workspace_id=req.workspace_id,
+        project_id=req.project_id,
+        new_owner_id=req.new_owner_id,
+        announcement_text=announcement
+    )
+    return res
+
+@router.get("/memory/recall")
+def recall_memory(workspace_id: str = DEFAULT_WORKSPACE_ID, query: str = "Payments"):
+    return recall_cross_session_memory(workspace_id, query)
+
+@router.get("/deliverable/latest")
+def get_latest_deliverable(workspace_id: str = DEFAULT_WORKSPACE_ID):
+    cypher = """
+    MATCH (d:Deliverable {workspace_id: $ws})
+    RETURN d.id, d.title, d.deliverable_type, d.status, d.content_json, d.owner_id, d.created_at
+    ORDER BY d.created_at DESC LIMIT 1
+    """
+    rows = db_client.query(cypher, {"ws": workspace_id})
+    if not rows:
+        return {"deliverable": None}
+    r = rows[0]
+    return {
+        "id": r[0],
+        "title": r[1],
+        "type": r[2],
+        "status": r[3],
+        "content": json.loads(r[4]) if r[4] else {},
+        "owner_id": r[5],
+        "created_at": r[6]
+    }
+
+@router.post("/generality/run")
+def run_second_workflow(workspace_id: str = DEFAULT_WORKSPACE_ID):
+    """P5 Generality Check: Run a second goal for Core Platform Infrastructure / Auth Gateway."""
+    coordinator = Coordinator(workspace_id=workspace_id)
+    goal = "Audit Core Platform Infrastructure dependencies and check Authentication Gateway readiness."
+    result = coordinator.run_goal_workflow(goal_text=goal, project_id="proj_core_infra")
+    return {
+        "message": "Generality check successfully executed across non-payments company context.",
+        "result": result
+    }

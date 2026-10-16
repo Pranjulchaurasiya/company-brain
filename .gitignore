@@ -1,0 +1,32 @@
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment variables
+.env
+.env.local
+
+# Node / Frontend
+node_modules/
+dist/
+build/
+.next/
+
+# Data & database persistent storage
+data/falkordb/
+*.rdb
+
+# Logs & temp
+*.log
+scratch/
+.system_generated/

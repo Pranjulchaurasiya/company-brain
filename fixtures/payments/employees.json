@@ -1,0 +1,47 @@
+[
+  {
+    "id": "emp_chief_of_staff",
+    "name": "Elena Vance",
+    "title": "Chief of Staff",
+    "department": "Operations & Leadership",
+    "reports_to": null,
+    "skills": ["Strategy", "Planning", "Cross-functional Coordination", "Resource Allocation"],
+    "status": "ACTIVE"
+  },
+  {
+    "id": "emp_eng_manager",
+    "name": "Marcus Chen",
+    "title": "Engineering Manager",
+    "department": "Platform Engineering",
+    "reports_to": "emp_chief_of_staff",
+    "skills": ["Project Planning", "Team Leadership", "Risk Assessment", "Service Architecture"],
+    "status": "ACTIVE"
+  },
+  {
+    "id": "emp_engineer",
+    "name": "Asha Patel",
+    "title": "Staff Software Engineer",
+    "department": "Platform Engineering",
+    "reports_to": "emp_eng_manager",
+    "skills": ["Payments Architecture", "Idempotency", "Concurrency", "API Design", "Distributed Systems"],
+    "status": "ACTIVE"
+  },
+  {
+    "id": "emp_knowledge_mgr",
+    "name": "Sophia Wu",
+    "title": "Knowledge Manager",
+    "department": "Technical Operations",
+    "reports_to": "emp_chief_of_staff",
+    "skills": ["Provenance Tracking", "Entity Resolution", "Fact Verification", "Documentation"],
+    "status": "ACTIVE"
+  },
+  {
+    "id": "emp_prior_dev",
+    "name": "David Kim",
+    "title": "Senior Infrastructure Engineer",
+    "department": "Core Systems",
+    "reports_to": "emp_eng_manager",
+    "skills": ["Legacy Systems", "Database Migration", "Kafka"],
+    "status": "ACTIVE"
+  }
+]

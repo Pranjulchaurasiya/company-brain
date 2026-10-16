@@ -1,0 +1,17 @@
+{
+  "id": "tkt_pay_104",
+  "source_key": "PAY-104",
+  "title": "PAY-104: High-volume concurrent retries cause double settlement on Stripe webhook latency",
+  "status": "BLOCKED",
+  "source_uri": "https://github.com/company-synthetic/payments-core/issues/104",
+  "assignee_id": "emp_engineer",
+  "author_id": "emp_eng_manager",
+  "source_created_at": "2026-10-02T14:22:00Z",
+  "source_updated_at": "2026-10-06T09:15:00Z",
+  "project_id": "proj_payments_v2",
+  "service_id": "svc_payments_settlement",
+  "severity": "HIGH",
+  "is_release_blocker": true,
+  "description": "Under upstream banking partner latency spikes (>800ms), secondary webhook retries arrive before the primary webhook handler commits its database transaction lock. This race condition leads to duplicate settlement allocations. This is an unresolved risk blocking Payments v2 release sign-off.",
+  "synthetic_label": "SIMULATED_GITHUB_ISSUE"
+}
