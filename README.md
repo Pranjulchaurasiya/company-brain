@@ -367,8 +367,7 @@ backend/tests/test_supersession_and_memory.py ...........               [100%]
 - 🏗️ [ARCHITECTURE.md](ARCHITECTURE.md) — Multi-agent system architecture & design
 - 📊 [DATA_MODEL.md](DATA_MODEL.md) — FalkorDB schema, node labels, and relationships
 - 👥 [AGENTS.md](AGENTS.md) — Employee roles, contracts, and collaboration protocol
-- 📝 [BLOG_POST.md](BLOG_POST.md) — Technical deep-dive blog post (Medium / Dev.to)
-- 📋 [SUBMISSION.md](SUBMISSION.md) — Complete WeMakeDevs Graph Hacks submission guide
+- 📝 [Medium Technical Blog Post](https://medium.com/@pranjulofficial01/building-an-autonomous-company-brain-how-we-turned-falkordb-into-a-shared-operating-system-68bee7595c16) — In-depth article on building with FalkorDB & multi-agent swarms
 
 ---
 
