@@ -500,6 +500,31 @@ function setupEventListeners() {
     });
   }
 
+  // Tab switching helper for clean, uncluttered change room results
+  window.switchChangeTab = function(tabName) {
+    const tabs = {
+      impact: { content: document.getElementById('tabContentImpact'), btn: document.getElementById('tabBtnImpact') },
+      timeline: { content: document.getElementById('tabContentTimeline'), btn: document.getElementById('tabBtnTimeline') },
+      messages: { content: document.getElementById('tabContentMessages'), btn: document.getElementById('tabBtnMessages') },
+      github: { content: document.getElementById('tabContentGithub'), btn: document.getElementById('tabBtnGithub') }
+    };
+    Object.keys(tabs).forEach(k => {
+      const item = tabs[k];
+      if (item.content) item.content.style.display = (k === tabName ? 'block' : 'none');
+      if (item.btn) {
+        if (k === tabName) {
+          item.btn.classList.add('active');
+          item.btn.style.borderColor = '#c084fc';
+          item.btn.style.color = '#ffffff';
+        } else {
+          item.btn.classList.remove('active');
+          item.btn.style.borderColor = 'rgba(255,255,255,0.1)';
+          item.btn.style.color = '#94a3b8';
+        }
+      }
+    });
+  };
+
   // Analyze Change Impact Action
   if (analyzeChangeBtn) {
     analyzeChangeBtn.addEventListener('click', async () => {
@@ -513,11 +538,16 @@ function setupEventListeners() {
         const res = await fetch(`${API_BASE}/change-room/analyze`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ proposed_change: proposal })
+          body: JSON.stringify({ proposed_change: proposal, workspace_id: 'ws_company_prime' })
         });
         const data = await res.json();
         if (res.ok && data.change_id) {
-          if (changeRoomResultBox) changeRoomResultBox.style.display = 'block';
+          if (changeRoomResultBox) {
+            changeRoomResultBox.style.display = 'block';
+            if (typeof window.switchChangeTab === 'function') window.switchChangeTab('impact');
+          }
+          const tabMsgCount = document.getElementById('tabMsgCount');
+          if (tabMsgCount && data.agent_messages) tabMsgCount.textContent = data.agent_messages.length;
 
           // 0. Render Final Grounded Answer Banner
           const finalAnswerBox = document.getElementById('finalAnswerBox');
