@@ -323,13 +323,15 @@ class File(BaseModel):
     extension: Optional[str] = None
     html_url: Optional[str] = None
 
+from backend.config import DEFAULT_WORKSPACE_ID
+
 class ChangeProposalRequest(BaseModel):
     proposed_change: Optional[str] = None
     change_request: Optional[str] = None
     question: Optional[str] = None
     query: Optional[str] = None
     proposed_files: Optional[List[str]] = None
-    workspace_id: str = "ws_company_synthetic"
+    workspace_id: str = Field(default_factory=lambda: DEFAULT_WORKSPACE_ID)
 
     @property
     def effective_change(self) -> str:
