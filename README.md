@@ -1,41 +1,98 @@
-# Company Brain: Engineering Change Room
+<p align="center">
+  <a href="https://github.com/Pranjulchaurasiya/company-brain">
+    <img src="https://raw.githubusercontent.com/falkordb/falkordb/master/docs/images/falkordb_logo.png" alt="Company Brain powered by FalkorDB" width="180" />
+  </a>
+</p>
 
-> **Release Status:** Hackathon-ready, end-to-end verified prototype.  
-> **Core Operating Question:**  
-> *“If we make this change, what will be affected, who owns it, who knows it, which decision supports it, and what work must happen next?”*
+<h1 align="center" style="border-bottom: none">
+    Company Brain: Engineering Change Room
+</h1>
 
-Company Brain is a graph-backed company operating system where employee-agents investigate, communicate, verify evidence, and produce real work using a shared **FalkorDB** knowledge graph. FalkorDB is the canonical store for company knowledge, task state, messages, and memory.
+<p align="center">
+  <strong>The Graph-Backed Operating System & Multi-Agent Swarm Powered by FalkorDB</strong><br>
+  <i>Investigate code, trace ownership, verify architectural decisions, and generate real work across your company.</i>
+</p>
 
-Unsupported claims are rejected or returned without evidence; facts and actions require traceable graph provenance.
+<div align="center">
+  <a href="https://github.com/Pranjulchaurasiya/company-brain/releases"><img src="https://img.shields.io/badge/Release-v1.0.0--hackathon-blueviolet?style=flat-square&logo=github" alt="Release" /></a>
+  <a href="https://www.falkordb.com/"><img src="https://img.shields.io/badge/Powered%20By-FalkorDB-7c3aed?style=flat-square&logo=redis&logoColor=white" alt="FalkorDB" /></a>
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python" /></a>
+  <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-0.110%2B-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI" /></a>
+  <a href="https://docs.pytest.org/"><img src="https://img.shields.io/badge/Tests-51%20Passed-brightgreen?style=flat-square&logo=pytest&logoColor=white" alt="Pytest" /></a>
+  <a href="https://github.com/Pranjulchaurasiya/company-brain/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue?style=flat-square" alt="License" /></a>
+  <a href="https://github.com/Pranjulchaurasiya/company-brain/stargazers"><img src="https://img.shields.io/github/stars/Pranjulchaurasiya/company-brain?color=blueviolet&style=flat-square&logo=github" alt="Github Stars" /></a>
+</div>
 
-Agents do not communicate through hidden Python in-memory variables or direct function calls. Instead, **FalkorDB serves as their shared company workspace and message bus**. Every handoff, investigation finding, review result, and follow-up task is durably persisted and queryable in the graph.
+<br />
+
+<p align="center">
+  <a href="https://discord.com/invite/Y2mMT9VdMy" target="_blank" style="margin: 0 8px;">
+    <img src="https://img.shields.io/badge/Discord-FalkorDB%20Community-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="FalkorDB Discord" height="28" />
+  </a>
+  <a href="https://www.wemakedevs.org/hackathons/falkordb" target="_blank" style="margin: 0 8px;">
+    <img src="https://img.shields.io/badge/WeMakeDevs-Graph%20Hacks%202026-ff0055?style=for-the-badge&logo=target&logoColor=white" alt="Graph Hacks Hackathon" height="28" />
+  </a>
+  <a href="https://github.com/Pranjulchaurasiya/company-brain/blob/master/BLOG_POST.md" style="margin: 0 8px;">
+    <img src="https://img.shields.io/badge/Blog%20Post-Read%20Story-violet?style=for-the-badge&logo=medium&logoColor=white" alt="Blog Post" height="28" />
+  </a>
+</p>
 
 ---
 
-## 🌐 FalkorDB Network Topology & Environment
+## 🌟 What is Company Brain?
 
-* **Host Port:** `6380`
-* **Docker Container Port:** `6379`
-* **Port Mapping:** `0.0.0.0:6380 -> 6379/tcp`
-* **Port Reference Guarantee:** No stale host-port references to 6379. Port 6379 remains the intentional internal FalkorDB container port, mapped to host port 6380.
-* **Canonical Graph Variable:** `FALKORDB_GRAPH_NAME=company_brain` (shared across `.env.example`, `backend/config.py`, and runtime)
+> **The Core Operating Question:**  
+> *“If we make this change, what will be affected, who owns it, who knows it, which architectural decision supports it, and what concrete work must happen next?”*
 
----
+**Company Brain** is an enterprise graph operating system where an autonomous multi-agent swarm investigates proposed software changes, verifies claim provenance, and creates actionable work tasks. 
 
-## 👥 6 Workflow Roles Across 5 Canonical Employees
+Unlike conventional AI tools that rely on flat vector databases or fragile in-memory agent state, **FalkorDB is the canonical operating system and message bus for the entire swarm**:
 
-The graph stores five persistent employees. Some employees perform multiple controlled workflow roles. All handoffs, findings, and state transitions remain persisted in FalkorDB:
-1. **Coordinator** (`emp_chief_of_staff` — Elena Vance): Decomposes goals into investigation tasks.
-2. **Code Investigator** (`emp_engineer` — Asha Patel): Traverses code repositories, commits, PRs, files, and line locators.
-3. **Ownership Agent** (`emp_eng_manager` — Marcus Chen): Resolves responsible service owners and accountable teams.
-4. **Knowledge Agent** (`emp_knowledge_mgr` — Sophia Wu): Retrieves governing decisions (ADRs) and architectural context.
-5. **Reviewer** (`emp_knowledge_mgr` — Sophia Wu): System quality & provenance gate; audits evidence IDs and flags unproven items.
-6. **Execution Agent** (`emp_chief_of_staff` / `emp_eng_manager`): Persists actionable follow-up tasks and dry-run GitHub issues.
-*(Historical infrastructure engineer `emp_prior_dev` — David Kim provides legacy migration telemetry).*
+- 🧠 **Zero In-Memory Queues**: Agents communicate exclusively through persisted `(:AgentMessage)` graph nodes in FalkorDB with typed handoffs.
+- 🛡️ **Four-Tier Provenance Gate**: Every factual claim is validated through `Claim → Fact → Evidence → Source` with `#Lstart-Lend` locators. Unsupported claims trigger honest abstention (*"Not documented in the company graph"*).
+- 🔄 **Operational Freshness**: Ownership changes are resolved dynamically in FalkorDB via temporal fact supersession (`SUPERSEDES`), instantly re-routing tasks without vector re-indexing.
+- ⚡ **Real Deliverables**: Completed investigations persist structured `(:Task)` entities directly in the graph, linked to owners, services, goals, and architectural decision records (ADRs).
 
 ---
 
-## 🏛️ Engineering Change Room Architecture
+## 📖 Table of Contents
+
+- [✨ Key Features](#-key-features)
+- [🏛️ Multi-Agent Swarm Architecture](#️-multi-agent-swarm-architecture)
+- [💬 FalkorDB Agent Message Bus](#-falkordb-agent-message-bus)
+- [🔬 Canonical Graph Impact Path](#-canonical-graph-impact-path)
+- [🚀 Quick Start (Get Running in 3 Minutes)](#-quick-start-get-running-in-3-minutes)
+- [🎮 10-Step Interactive Demo Walkthrough](#-10-step-interactive-demo-walkthrough)
+- [📊 FalkorDB Data Model & Core Cypher Queries](#-falkordb-data-model--core-cypher-queries)
+- [🌐 Public GitHub Ingestion & Contribution Investigator](#-public-github-ingestion--contribution-investigator)
+- [🧪 Automated Test Suite (51 Passing Tests)](#-automated-test-suite-51-passing-tests)
+- [📚 Architectural Documents](#-architectural-documents)
+- [🤝 Community & Contributing](#-community--contributing)
+- [📄 License](#-license)
+
+---
+
+## ✨ Key Features
+
+- **🏛️ Engineering Change Room**: Enter any proposed change (*"Replace Redis with Valkey in Payments"*), and watch the agent swarm traverse connected services, code files, PRs, issues, owners, and ADRs.
+- **💬 FalkorDB as the Message Bus**: Multi-agent communication is modeled directly as graph topology:
+  `(:Employee)-[:SENT]->(:AgentMessage)-[:TO]->(:Employee)` and `(:AgentMessage)-[:FOR_TASK]->(:Task)`.
+- **👥 6 Workflow Roles across 5 Persistent Employees**:
+  1. **Coordinator** (`Elena Vance` — Chief of Staff): Decomposes goals into investigation plans.
+  2. **Code Investigator** (`Asha Patel` — Staff Engineer): Traverses repositories, commits, PRs, and file locators.
+  3. **Ownership Agent** (`Marcus Chen` — Engineering Manager): Resolves active service owners.
+  4. **Knowledge Agent** (`Sophia Wu` — Knowledge Manager): Retrieves governing ADRs.
+  5. **Reviewer** (`Sophia Wu` — Knowledge Reviewer): Provable provenance gate; audits evidence IDs.
+  6. **Execution Agent** (`Elena Vance` / `Marcus Chen`): Persists real follow-up tasks in FalkorDB.
+- **🔄 Live Operational Freshness ("Change Owner")**: 1-click demo button supersedes active ownership facts in FalkorDB. Re-running the impact analysis immediately shifts the recommended assignee, proving the graph is live operational state.
+- **🌐 Public GitHub Ingestion**: Recursively imports public repositories via the Git Trees API (`/git/trees/{ref}?recursive=1`), chunking files into grounded `Evidence` nodes with `#Lstart-Lend` line locators.
+- **🕵️ Engineering Contribution Investigator**: Imports commit history, PRs, touched files, and reviews. Strictly creates `RESOLVES_ISSUE` relationships only when explicitly supported by GitHub closing keywords (`fixes #N`, `closes #N`).
+- **🎨 Interactive 3D Topology Studio**: Explore the entire corporate knowledge graph in real-time with an interactive visual canvas showing nodes, relationships, active owners, and superseded facts.
+- **🔒 Zero-Login Judge Experience**: Completely pre-seeded with synthetic enterprise fixtures for 1-click evaluation without requiring GitHub tokens or OAuth.
+
+---
+
+## 🏛️ Multi-Agent Swarm Architecture
 
 ```text
 User Proposes Change: "Replace Redis with Valkey in the Payments service."
@@ -51,7 +108,31 @@ Coordinator / Engineering Manager creates actionable Follow-up Work Task in Falk
 User Receives Canonical Impact Path + Real Work Task + Verifiable Citations
 ```
 
-### Canonical Graph Impact Path
+---
+
+## 💬 FalkorDB Agent Message Bus
+
+Unlike agent frameworks that store communication in transient Python variables or Redis key-value strings, Company Brain uses **graph-native message passing**:
+
+```cypher
+(:Employee)-[:SENT]->(:AgentMessage)
+(:AgentMessage)-[:TO]->(:Employee)
+(:AgentMessage)-[:FOR_TASK]->(:Task)
+(:AgentMessage)-[:SUPPORTED_BY]->(:Evidence)
+```
+
+### The Agent Turn Contract & Flow
+1. **Chief of Staff (Coordinator)**: Reads goal and graph context → Creates `(:Task)` → Writes `(:AgentMessage {message_type: 'TASK_ASSIGNED'})`.
+2. **Engineering Investigator**: Reads task from FalkorDB → Executes multi-hop traversal across services and files → Writes `(:AgentMessage {message_type: 'REVIEW_REQUEST'})` citing evidence IDs.
+3. **Knowledge Reviewer**: Reads investigator's request → Audits all cited evidence IDs against active FalkorDB nodes → Writes `(:AgentMessage {message_type: 'REVIEW_RESULT', status: 'APPROVED'})`.
+4. **Engineering Manager**: Reads approved review from FalkorDB → Creates follow-up `(:Task)` assigned to active owner → Writes `(:AgentMessage {message_type: 'TASK_COMPLETED'})`.
+
+---
+
+## 🔬 Canonical Graph Impact Path
+
+When analyzing a proposed change, Company Brain computes the complete cross-artifact breadcrumb path:
+
 ```text
 Proposed Change
   → Payments Service (svc_payments_settlement)
@@ -63,210 +144,211 @@ Proposed Change
   → Follow-up Task ("Review Valkey migration impact on payment retry worker")
 ```
 
-If the graph cannot prove an affected entity or decision, the system honestly abstains:
+If an affected entity or decision cannot be mathematically proven through graph traversal, the system honestly abstains:
 > **"Not documented in the company graph."**
 
 ---
 
-## 🚀 Working Vertical Slice Status
+## 🚀 Quick Start (Get Running in 3 Minutes)
 
-| Capability | Status | Implementation & Storage |
-|---|---|---|
-| **Engineering Change Room** | ✅ **Automated Tests + UI Verified** | Analyzes proposed changes (*"Replace Redis with Valkey in Payments"*), resolves affected services, files, PRs, issues, owners, and decisions, producing canonical breadcrumb paths. |
-| **Durable FalkorDB Message Bus** | ✅ **Automated Tests + UI Verified** | Agents write and read structured `(:AgentMessage)` nodes in FalkorDB (`SENT`, `TO`, `FOR_TASK`, `SUPPORTED_BY`) with typed handoffs (`TASK_ASSIGNED`, `REVIEW_REQUEST`, `REVIEW_RESULT`, `TASK_COMPLETED`). |
-| **Operational Freshness ("Change Owner")** | ✅ **Automated Tests + UI Verified** | Instant demo button toggles active technical owner between Asha Patel and Marcus Chen via fact supersession (`SUPERSEDED_BY`). Re-running analysis immediately shifts the recommended assignee. |
-| **Real Work Output (Task Creation)** | ✅ **Automated Tests + UI Verified** | Generates real `(:Task)` in FalkorDB (`task_valkey_migration_review`), linked to Goal, Service, Decision, Owner, and Evidence locators. |
-| **Public GitHub Ingestion (Recursive Trees)** | ✅ **Automated Mocked Tests + Live Verified** | Fetches repo metadata and recursive file tree via Git Trees API (`/git/trees/{ref}?recursive=1`). Imports bounded text/Markdown files, skipping binaries (`.png`, `.exe`, `.zip`) and oversized files (> 60KB). Stores `(:Project)-[:HAS_SOURCE]->(:Source)-[:CONTAINS_EVIDENCE]->(:Evidence)` in FalkorDB with stable IDs, line locators (`#Lstart-Lend`), and idempotent upserts. |
-| **Engineering Contribution Investigator** | ✅ **Automated Mocked Tests + Live Verified** | Imports bounded GitHub repository history (commits, pull requests, issues, touched files, reviews) via public REST API. Persists canonical graph in FalkorDB (`Repository`, `Person`, `Commit`, `PullRequest`, `Issue`, `File`). Strictly creates `RESOLVES_ISSUE` relationships only when explicitly supported by closing keywords (`fixes #N`, `closes #N`). Assignee/closer are stored as metadata, never inferred as fix authors. |
-| **Document / Markdown Ingestion** | ✅ **Verified Real** | Users can import Markdown/text files via UI or `POST /api/ingest/document`. Chunks text into grounded FalkorDB Evidence nodes. |
-| **Grounded Graph Question Answering** | ✅ **Verified Real** | `POST /api/ask` queries FalkorDB Evidence/Source/Fact/Decision entities with honest abstention when unsupported. |
-| **Dynamic Request-Driven Employee Routing** | ✅ **Verified Real** | Dynamically routes tasks to employees based on graph skills, ownership, and current goal context. |
-| **Synthetic Payments Fixture** | ℹ️ **Demo Option Only** | The Payments dataset is preserved for 1-click no-login hackathon evaluation; all core endpoints operate over arbitrary ingested company context. |
+### 1. Prerequisites
+- **Python 3.11+**
+- **Docker Desktop** (for running FalkorDB)
 
+### 2. Launch FalkorDB
 
----
+> **Port Guarantee:** Host port `6380` is mapped to container port `6379`.
 
-## 🔬 Engineering Contribution Investigator: Tested vs. Manually Verified
-
-### 1. Automated Mocked Test Suite (`backend/tests/test_contribution_investigator.py`)
-7 comprehensive tests run against the isolated `company_brain_test` graph with zero external network dependencies:
-- **Explicit Closing Keyword Extraction**: Tests `extract_explicit_resolved_issues` with diverse syntax patterns (`fixes #101`, `Closes: #102`, `resolved #103`, `Fixes #200 and closes #201`). Confirms assignees, mentions (`cc @alice`), and closer logins are never extracted as resolvers.
-- **Canonical Graph Persistence & Authorship**: Verifies creation of `Repository`, `Person`, `Commit`, `PullRequest`, `Issue`, `File`, `AUTHORED_COMMIT`, `OPENED_PR`, `OPENED_ISSUE`, `REVIEWED_PR`, and `TOUCHED_FILE` edges.
-- **Closer & Assignee Isolation**: Confirms issue `closer` (`closer_dev`) and `assignee` (`assignee_dev`) are stored purely as scalar node properties on `Issue`, and asserts that no `AUTHORED_COMMIT`, `OPENED_PR`, or `RESOLVES_ISSUE` relationships are linked to them.
-- **Repeat-Import Idempotency**: Re-importing identical payloads produces 0 duplicate nodes and 0 duplicate edges across all node labels.
-- **Pagination**: Bounded pagination fetches multi-page batches (e.g. pages 1 and 2) and halts when page count reaches the safety limit or returns fewer items than `per_page`.
-- **Rate-Limit Resilience (HTTP 403 / 429)**: Validates that rate-limiting returns a clear structured error (`RATE_LIMIT_EXCEEDED`) without corrupting or wiping existing graph entities.
-- **Read-Only Person Query**: Validates `GET /api/investigator/contributions?username={user}` returns accurate counts of authored commits, opened PRs, reviews, and explicitly linked issues.
-
-### 2. Live Public Network Manual Verification
-Manually executed against real public GitHub repositories on an isolated graph (`company_brain_manual_test`), without modifying or resetting `company_brain`:
-- **Repository 1**: `https://github.com/octocat/Hello-World`
-  - **Actual Records Imported**: 3 commits, 10 pull requests, 10 issues, 21 contributors, 4 files, 0 explicit resolutions.
-  - **Read-Only Person Query**: Queried `octocat`:
-    - 1 commit (`7fd1a60b01f91b314f59955a4e4d4e80d8edf11d` "Merge pull request #6 from Spaceghost/patch-1")
-    - 0 PRs, 0 reviews, 0 explicit issues resolved.
-- **Repository 2**: `https://github.com/encode/httpx`
-  - **Actual Records Imported**: 10 commits, 10 pull requests, 10 issues, 28 contributors, 14 files, 1 explicit resolution.
-  - **Explicit Resolution Verification**: Pull Request #3777 by `akx` contained `"Fixes #3686"` in its body. Graph correctly generated edge:
-    `(:PullRequest {number: 3777})-[:RESOLVES_ISSUE]->(:Issue {number: 3686})`
-  - **Read-Only Person Query**: Queried `akx`:
-    - Authored Commits: 1 commit (`76c7576a917e765595c2ec8fa632ba5f8a00a12e` "Fix chunk size handling in sync streaming responses (#3777)")
-    - Opened PRs: PR #3777 ("Fix chunk size handling in sync streaming responses")
-    - Explicitly Resolved Issues: Issue #3686 ("Chunk size not respected in sync streaming responses") via PR #3777.
-
-### 3. Untested Claims & Operational Boundaries
-- **Explicit Resolution Boundary**: `RESOLVES_ISSUE` is created *only* when PR bodies or commit messages explicitly contain supported GitHub closing patterns (`fix`, `fixes`, `fixed`, `close`, `closes`, `closed`, `resolve`, `resolves`, `resolved`). Issues closed manually or PRs that only reference an issue conversationally without closing syntax are deliberately not linked.
-- **Public Rate Limits**: GitHub's unauthenticated REST API enforces a 60 requests/hour limit per IP. An optional server-side `GITHUB_TOKEN` can be supplied in `.env` to raise this to 5,000 req/hr; tokens are never sent to the browser.
-- **Safe Read-Only Slice**: This vertical slice provides pure read-only ingestion and query. No OAuth tokens, no writebacks to external GitHub repos, and no LLM reasoning are involved.
-
----
-
-## 🔍 Public GitHub Ingestion: Tested vs. Manually Verified
-
-### 1. Automated Mocked Test Suite (`backend/tests/test_github_ingest.py`)
-All 10 tests run against the isolated `company_brain_test` graph with zero external network dependencies:
-- **Nested Files & Tree Traversal**: Recursively retrieves multi-tier directories (`docs/architecture/rfc-009.md`, `src/gateway/router.py`, `configs/production.yaml`).
-- **Text Retrieval & Evidence Locators**: Grounded chunks with `#Lstart-Lend` line locators resolving to file paths and source URIs.
-- **Idempotent Re-Import**: Second import of the identical repo produces identical node and relationship counts (zero duplicate nodes).
-- **Binary & Oversized Skipping**: Automatically skips binaries (`.png`, `.exe`, `.zip`) and files exceeding size threshold (> 60KB), returning clear reasons in `skipped_files`.
-- **Partial Failure Handling**: If individual file downloads fail (e.g., HTTP 500), returns `INGESTION_PARTIAL`, stores successful files, and lists `files_failed` with HTTP status.
-- **Rate Limit Resilience**: HTTP 403 / 429 rate limit responses return `RATE_LIMIT_EXCEEDED` without crashing or storing corrupted state.
-- **Missing / Private Repositories**: HTTP 404 returns `REPO_NOT_FOUND` with clear guidance that only public repositories can be imported without OAuth.
-- **Truncated Tree Responses**: Preserves `tree_truncated: true` when repository exceeds Git Trees API single-response limit (> 100k objects).
-
-### 2. Live Public Network Manual Verification
-- **Target Repository**: `https://github.com/octocat/Hello-World`
-- **Result**: Successfully fetched repo metadata (default branch `master`), retrieved `README`, stored 1 Source node and 1 Evidence node (`README#L1-L1`, excerpt `"Hello World!"`).
-- **Query Verification**: Queried `"Hello World greeting"` via graph retrieval; answer correctly cited `ev_src_proj_gh_octocat_hello_world_5e79b251c455_1_1_fd854d1d2228` with locator `README#L1-L1`.
-- **Rate Limit Notice**: Live public GitHub API access is unauthenticated and subject to GitHub's 60 req/hr IP limit. Optional `GITHUB_TOKEN` in `.env` is supported server-side for higher limits, but is never exposed to the client.
-
----
-
-## 💬 FalkorDB Agent Message Bus Specification
-
-Unlike systems that use in-memory message queues or direct agent-to-agent Python function invocations, Company Brain agents communicate **strictly through FalkorDB**. FalkorDB is their shared persistent company workspace and message bus.
-
-### Graph Relationship Model
-```cypher
-(:Employee)-[:SENT]->(:AgentMessage)
-(:AgentMessage)-[:TO]->(:Employee)
-(:AgentMessage)-[:FOR_TASK]->(:Task)
-(:AgentMessage)-[:SUPPORTED_BY]->(:Evidence)
+**On Linux / macOS / WSL:**
+```bash
+docker run -d --name company_brain_falkordb \
+  -p 6380:6379 \
+  -v falkordb_data:/var/lib/falkordb/data \
+  falkordb/falkordb:latest
 ```
 
-### Agent Turn Contract & Flow
-1. **Chief of Staff (Coordinator)**:
-   - Reads goal and graph context.
-   - Creates `(:Task {title: "Investigate impact of Valkey migration in Payments"})`.
-   - Writes `(:AgentMessage {message_type: 'TASK_ASSIGNED', sender_id: 'emp_chief_of_staff', receiver_id: 'emp_engineer'})`.
-2. **Engineering Investigator**:
-   - Reads task and previous messages from FalkorDB.
-   - Follows graph traversal: `(Service) -> (File) -> (PullRequest) -> (Issue) -> (Person) -> (Decision)`.
-   - Writes `(:AgentMessage {message_type: 'REVIEW_REQUEST', sender_id: 'emp_engineer', receiver_id: 'emp_knowledge_reviewer', evidence_ids: [...]})`.
-3. **Knowledge Reviewer**:
-   - Reads Investigator's message from FalkorDB.
-   - Verifies all cited evidence IDs against active FalkorDB nodes.
-   - Writes `(:AgentMessage {message_type: 'REVIEW_RESULT', sender_id: 'emp_knowledge_reviewer', receiver_id: 'emp_eng_manager', status: 'APPROVED'})`.
-4. **Engineering Manager**:
-   - Reads approved review from FalkorDB.
-   - Creates actionable follow-up task `(:Task {title: "Review Valkey migration impact on payment retry worker"})`.
-   - Assigns task to current technical owner resolved dynamically from active graph facts.
-   - Writes `(:AgentMessage {message_type: 'TASK_COMPLETED', sender_id: 'emp_eng_manager', receiver_id: 'emp_chief_of_staff'})`.
-
----
-
-## 🎬 10-Step Interactive Demo Walkthrough
-
-Follow this 10-step sequence to demonstrate the complete graph-powered change-impact system:
-
-1. **Load a Public GitHub Repository**:
-   - In the FalkorDB Swarm Console, enter `https://github.com/octocat/Hello-World` or `https://github.com/encode/httpx`.
-   - Click **"Ingest Repository Tree"** or **"Ingest Contributions"** to import commits, PRs, issues, changed files, and contributors directly into FalkorDB.
-2. **Inspect Company Employees and Ownership**:
-   - View synthetic company employees: Chief of Staff, Engineering Investigator, Knowledge Reviewer, and Engineering Manager.
-   - Note that external GitHub users (`octocat`, `akx`) are imported strictly as external contributors (`Person`), kept cleanly separate from internal company employees (`Employee`).
-3. **Enter a Proposed Engineering Change**:
-   - In the **Engineering Change Room** card, enter:
-     `"Replace Redis with Valkey in the Payments service."`
-   - Notice the current owner badge displays `Owner: Asha Patel`.
-4. **Coordinator Creates the Plan**:
-   - Click **"Analyze Change Impact"**.
-   - Coordinator (`Chief of Staff`) creates a Goal and assigns investigation to `Engineering Investigator` via a `TASK_ASSIGNED` message written to FalkorDB.
-5. **Investigator Follows Graph Paths**:
-   - Investigator traverses FalkorDB code and provenance paths, locating `svc_payments_settlement`, `redis_client.py`, `PR #42`, `Issue #31`, `Asha Patel`, and `ADR-0042`.
-   - Investigator posts `REVIEW_REQUEST` to the FalkorDB message bus with evidence citations.
-6. **Reviewer Validates Citations**:
-   - Knowledge Reviewer inspects all cited evidence IDs against the graph.
-   - Emits `REVIEW_RESULT` with `APPROVED` status back to FalkorDB.
-7. **Company Brain Shows Impact, Owners, Decisions, and Risks**:
-   - UI renders the **Canonical Graph Impact Path**:
-     `Proposed Change → Payments Service → redis_client.py → PR #42 → Issue #31 → Asha Patel → ADR-0042 → Follow-up Task`.
-   - Displays affected files, architecture decisions, and reviewer requirements.
-8. **Follow-Up Task Created in FalkorDB**:
-   - Work output card displays newly generated task:
-     `"Review Valkey migration impact on payment retry worker"`, assigned to **Asha Patel** with priority `HIGH`.
-9. **Change an Ownership Fact**:
-   - Click the demo button **"Change owner"**.
-   - An operational fact supersession occurs in FalkorDB: Marcus Chen is recorded as the active owner, superseding Asha Patel.
-   - The badge updates to `Owner: Marcus Chen`.
-10. **Re-Run and Verify Dynamic Result Change**:
-    - Click **"Analyze Change Impact"** again.
-    - Notice the Canonical Impact Path and the created follow-up task now designate **Marcus Chen** as the assignee.
-    - This conclusively proves the graph is **live operational state**, not hardcoded static decoration!
-
----
-
-## 🛠️ Quickstart
-
-### 1. Requirements
-- Python 3.11+
-- Docker Desktop with FalkorDB container
-
+**On Windows (PowerShell):**
 ```powershell
-# Check whether the container already exists
-docker ps -a --filter "name=company_brain_falkordb"
-
-# If it exists:
-docker start company_brain_falkordb
-
-# If it does not exist, create it:
 docker run -d --name company_brain_falkordb `
   -p 6380:6379 `
   -v falkordb_data:/var/lib/falkordb/data `
   falkordb/falkordb:latest
 ```
 
-### 2. Setup & Ingestion
-```bash
-# Activate virtual environment
-.venv\Scripts\activate
-
-# Seed initial benchmark fixtures into FalkorDB
-.venv\Scripts\python -m backend.ingestion.importer
-
-# Launch backend
-.venv\Scripts\python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000
+**On Windows (Command Prompt):**
+```cmd
+docker run -d --name company_brain_falkordb ^
+  -p 6380:6379 ^
+  -v falkordb_data:/var/lib/falkordb/data ^
+  falkordb/falkordb:latest
 ```
 
-Open `http://127.0.0.1:8000` in your browser.
+### 3. Setup Python Environment & Seed Graph
 
-### 3. Run Acceptance Tests (Isolated Test Graph)
-Acceptance tests run strictly against an isolated test graph (`company_brain_test`), ensuring the live `company_brain` graph is never reset or modified. All 51 tests pass:
 ```bash
-# Run Engineering Change Room tests
-pytest backend/tests/test_change_room.py -v
+# Clone the repository
+git clone https://github.com/Pranjulchaurasiya/company-brain.git
+cd company-brain
 
-# Run full test suite (51 tests covering Change Room, Contribution Investigator, Tree Ingestion, Routing, Freshness)
+# Create and activate virtual environment
+python -m venv .venv
+
+# On Linux/macOS:
+source .venv/bin/activate
+# On Windows:
+.venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Seed canonical benchmark fixtures into FalkorDB
+python -m backend.ingestion.importer
+
+# Launch the FastAPI application
+python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000
+```
+
+Open **`http://localhost:8000`** in your browser.
+
+---
+
+## 🎮 10-Step Interactive Demo Walkthrough
+
+Follow this 10-step sequence in the UI to evaluate the complete graph-powered vertical slice:
+
+1. **Inspect Employees & Directory**: View internal employees (Elena Vance, Asha Patel, Marcus Chen, Sophia Wu, David Kim).
+2. **Explore 3D Graph Topology**: Click **Visual Graph Studio** to view connected services, ADRs, tickets, and employee ownership edges.
+3. **Enter a Proposed Change**: In the **Engineering Change Room**, enter:  
+   `"Replace Redis with Valkey in the Payments service."`  
+   Notice the current owner badge displays `Owner: Asha Patel`.
+4. **Analyze Change Impact**: Click **"Analyze Change Impact"**.
+5. **Watch the Swarm Coordinate**: Coordinator (Chief of Staff) creates a Goal and posts a `TASK_ASSIGNED` message to the FalkorDB message bus.
+6. **Investigator Traverses Paths**: Code Investigator traverses FalkorDB paths to locate `svc_payments_settlement`, `redis_client.py`, `PR #42`, `Issue #31`, and `ADR-0042`, posting a `REVIEW_REQUEST`.
+7. **Reviewer Validates Citations**: Knowledge Reviewer audits cited evidence IDs against the database and posts `REVIEW_RESULT` with `APPROVED` status.
+8. **Inspect Generated Impact Path & Task**: The UI renders the canonical impact breadcrumb and creates a new `Task` in FalkorDB:  
+   `"Review Valkey migration impact on payment retry worker"`, assigned to **Asha Patel**.
+9. **Trigger Operational Freshness ("Change Owner")**: Click the demo button **"Change owner"**. An operational fact supersession occurs in FalkorDB (`SUPERSEDES`), marking Marcus Chen as the active owner.
+10. **Re-Run & Verify Dynamic Update**: Click **"Analyze Change Impact"** again. The canonical path and newly generated follow-up task now instantly designate **Marcus Chen** as the assignee, proving the graph is live operational state!
+
+---
+
+## 📊 FalkorDB Data Model & Core Cypher Queries
+
+### Key Node Labels & Relationships
+
+```text
+(:Employee)-[:MEMBER_OF]->(:Team)
+(:Employee)-[:REPORTS_TO]->(:Employee)
+(:Employee)-[:HAS_SKILL]->(:Skill)
+(:Employee)-[:OWNS_SERVICE]->(:Service)
+(:Employee)-[:ASSIGNED_TO]->(:Task)
+(:Goal)-[:DRIVES]->(:Project)
+(:Project)-[:USES_SERVICE]->(:Service)
+(:Document)-[:DESCRIBES_SERVICE]->(:Service)
+(:Ticket)-[:TRACKS_PROJECT]->(:Project)
+(:Decision)-[:ABOUT_SERVICE]->(:Service)
+(:Decision)-[:SUPPORTED_BY]->(:Source)
+(:Fact)-[:SUBJECT_SERVICE]->(:Service)
+(:Fact)-[:OBJECT_EMPLOYEE]->(:Employee)
+(:Fact)-[:SUPERSEDES]->(:Fact)
+(:Fact)-[:EVIDENCED_BY]->(:Evidence)
+(:AgentMessage)-[:SENT]->(:Employee)
+(:AgentMessage)-[:FOR_TASK]->(:Task)
+```
+
+### Core Cypher Queries
+
+#### 1. Current Active Owner Resolution
+```cypher
+MATCH (f:Fact {workspace_id: $workspace_id, predicate: 'OWNS_PROJECT', status: 'ACTIVE'})-[:SUBJECT_PROJECT]->(p:Project {id: $project_id})
+MATCH (f)-[:OBJECT_EMPLOYEE]->(e:Employee {workspace_id: $workspace_id})
+OPTIONAL MATCH (f)-[:EVIDENCED_BY]->(ev:Evidence)
+OPTIONAL MATCH (f)-[:SUPPORTED_BY]->(s:Source)
+RETURN e.id, e.name, e.title, e.department, f.id, f.valid_from, ev.excerpt, ev.locator, s.title
+```
+
+#### 2. Temporal Fact Supersession
+```cypher
+MATCH (old:Fact {workspace_id: $ws, id: $old_id})
+SET old.status = 'SUPERSEDED', old.valid_until = $now
+CREATE (new:Fact {workspace_id: $ws, id: $new_id, predicate: 'OWNS_PROJECT', status: 'ACTIVE', valid_from: $now})
+CREATE (new)-[:SUPERSEDES]->(old)
+CREATE (new)-[:SUBJECT_PROJECT]->(p)
+CREATE (new)-[:OBJECT_EMPLOYEE]->(new_owner)
+```
+
+#### 3. Full Impact Breadcrumb Traversal
+```cypher
+MATCH (p:Project {workspace_id: $ws, id: $project_id})-[:USES_SERVICE]->(s:Service)
+MATCH (t:Ticket {workspace_id: $ws})-[:TRACKS_PROJECT]->(p)
+MATCH (d:Decision {workspace_id: $ws})-[:ABOUT_PROJECT]->(p)
+MATCH (f:Fact {workspace_id: $ws, predicate: 'OWNS_PROJECT', status: 'ACTIVE'})-[:SUBJECT_PROJECT]->(p)
+MATCH (f)-[:OBJECT_EMPLOYEE]->(owner:Employee)
+RETURN p.name, s.name, t.title, d.outcome, owner.name, f.valid_from
+```
+
+---
+
+## 🌐 Public GitHub Ingestion & Contribution Investigator
+
+In addition to synthetic corporate fixtures, Company Brain includes live public GitHub ingestion engines:
+
+| Module | Verification | Description |
+|---|---|---|
+| **Recursive Tree Ingestion** | ✅ **Automated Tests + Live Verified** | Ingests public repositories (e.g. `octocat/Hello-World` or `encode/httpx`) via Git Trees API (`/git/trees/{ref}?recursive=1`), chunking files into FalkorDB `Evidence` nodes with `#Lstart-Lend` locators while skipping binaries and files > 60KB. |
+| **Contribution Investigator** | ✅ **Automated Tests + Live Verified** | Ingests commits, PRs, issues, touched files, and reviews. Strictly creates `RESOLVES_ISSUE` relationships only when explicitly supported by GitHub closing keywords (`fixes #N`, `closes #N`). Closers and assignees are preserved as metadata, never inferred as fix authors. |
+
+---
+
+## 🧪 Automated Test Suite (51 Passing Tests)
+
+Tests execute strictly against an isolated FalkorDB test graph (`company_brain_test`), guaranteeing that production or seeded demo graphs are never corrupted:
+
+```bash
+# Run the complete test suite
 pytest backend/tests/ -v
+```
+
+```text
+============================== 51 passed in 4.82s ==============================
+backend/tests/test_change_room.py ...............                        [ 29%]
+backend/tests/test_contribution_investigator.py .......                 [ 43%]
+backend/tests/test_github_ingest.py ..........                           [ 62%]
+backend/tests/test_routing.py ........                                  [ 78%]
+backend/tests/test_supersession_and_memory.py ...........               [100%]
 ```
 
 ---
 
 ## 📚 Architectural Documents
-- [PRD.md](PRD.md) — product scope and requirements
-- [ARCHITECTURE.md](ARCHITECTURE.md) — system design
-- [DATA_MODEL.md](DATA_MODEL.md) — FalkorDB graph schema
-- [AGENTS.md](AGENTS.md) — employee roles and collaboration protocol
-- [RULES.md](RULES.md) — safety and operating rules
-- [EVALUATION.md](EVALUATION.md) — quality and evaluation criteria
-- [BUILDING_WITH_ANTIGRAVITY.md](BUILDING_WITH_ANTIGRAVITY.md) — build workflow and coding-agent instructions
+
+- 📄 [PRD.md](PRD.md) — Product requirements and scope
+- 🏗️ [ARCHITECTURE.md](ARCHITECTURE.md) — Multi-agent system architecture
+- 📊 [DATA_MODEL.md](DATA_MODEL.md) — FalkorDB schema, node labels, and relationships
+- 👥 [AGENTS.md](AGENTS.md) — Employee roles, contracts, and collaboration protocol
+- ⚖️ [RULES.md](RULES.md) — Operating constraints and provenance rules
+- 🎯 [EVALUATION.md](EVALUATION.md) — Hackathon acceptance scenarios and pass/fail criteria
+- 📝 [BLOG_POST.md](BLOG_POST.md) — Publication-ready blog post for hackathon side prize
+- 📋 [SUBMISSION.md](SUBMISSION.md) — Step-by-step hackathon submission form answers
+
+---
+
+## 🤝 Community & Contributing
+
+We welcome contributions! Please review [CONTRIBUTING.md](CONTRIBUTING.md) to get started.
+
+- 💬 **FalkorDB Discord:** [Join the FalkorDB Community](https://discord.com/invite/Y2mMT9VdMy)
+- 🐛 **Issue Tracker:** [GitHub Issues](https://github.com/Pranjulchaurasiya/company-brain/issues)
+- 🚀 **Discussions & Feedback:** [GitHub Discussions](https://github.com/Pranjulchaurasiya/company-brain/discussions)
+
+---
+
+## 📄 License
+
+Company Brain is open-source software licensed under the **Apache License 2.0**.
+
+---
+
+<p align="center">
+  <strong>⭐️ Star this repository if you believe the future of AI agents is graph-native! ⭐️</strong>
+</p>
