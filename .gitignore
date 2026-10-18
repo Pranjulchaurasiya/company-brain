@@ -30,3 +30,4 @@ data/falkordb/
 *.log
 scratch/
 .system_generated/
+graphify-out/

@@ -169,17 +169,30 @@ def get_all_employees(workspace_id: str) -> List[Dict[str, Any]]:
     OPTIONAL MATCH (e)-[:MEMBER_OF]->(t:Team)
     OPTIONAL MATCH (e)-[:HAS_SKILL]->(s:Skill)
     OPTIONAL MATCH (e)-[:REPORTS_TO]->(mgr:Employee)
-    RETURN e.id, e.name, e.title, e.department, t.name, mgr.name, collect(s.name)
+    WITH e, mgr, collect(distinct t.name) as team_names, collect(distinct s.name) as skills
+    RETURN e.id, e.name, e.title, e.department, team_names, mgr.name, skills
+    ORDER BY e.name
     """
     rows = db_client.query(cypher, {"workspace_id": workspace_id})
     employees = []
+    seen_ids = set()
     for r in rows:
+        emp_id = r[0]
+        if emp_id in seen_ids:
+            continue
+        seen_ids.add(emp_id)
+
+        dept = r[3]
+        team_names = [t for t in (r[4] or []) if t]
+        matching_team = next((t for t in team_names if t == dept), None)
+        team_name = matching_team or (team_names[0] if team_names else None)
+
         employees.append({
-            "id": r[0],
+            "id": emp_id,
             "name": r[1],
             "title": r[2],
-            "department": r[3],
-            "team": r[4],
+            "department": dept,
+            "team": team_name,
             "reports_to_name": r[5],
             "skills": r[6]
         })
@@ -219,3 +232,9 @@ def get_graph_snapshot(workspace_id: str) -> Dict[str, Any]:
         })
 
     return {"nodes": nodes, "edges": edges}
+
+def get_person_contributions_query(workspace_id: str, person_identifier: str) -> Dict[str, Any]:
+    """Read-only query that lists a person's commits, PRs, reviews if available, and explicitly linked issues."""
+    from backend.ingestion.contribution_investigator import get_person_contributions
+    return get_person_contributions(workspace_id, person_identifier)
+

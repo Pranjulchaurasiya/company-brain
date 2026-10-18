@@ -26,6 +26,31 @@ def test_api_workspace():
     data = res.json()
     assert data["node_count"] > 10
     assert len(data["employees"]) >= 4
+    
+    # Assert employee ID uniqueness (regression test for duplicate employee issue)
+    emp_ids = [e["id"] for e in data["employees"]]
+    assert len(emp_ids) == len(set(emp_ids)), f"Duplicate employee IDs found: {emp_ids}"
+    
+    # Verify Sophia Wu exists and appears exactly once
+    sophia_matches = [e for e in data["employees"] if "Sophia" in e.get("name", "")]
+    assert len(sophia_matches) == 1, f"Expected exactly 1 Sophia Wu, found {len(sophia_matches)}"
+    assert sophia_matches[0]["skills"], "Sophia Wu should have skills intact"
+
+def test_api_graph_stats():
+    res = client.get(f"/api/graph/stats?workspace_id={WORKSPACE_ID}")
+    assert res.status_code == 200
+    data = res.json()
+    assert "node_count" in data
+    assert "edge_count" in data
+    assert data["node_count"] > 0
+    assert data["edge_count"] > 0
+
+    # Cross-verify with /api/workspace
+    ws_res = client.get(f"/api/workspace?workspace_id={WORKSPACE_ID}")
+    assert ws_res.status_code == 200
+    ws_data = ws_res.json()
+    assert data["node_count"] == ws_data["node_count"]
+    assert data["edge_count"] == ws_data["edge_count"]
 
 def test_api_graph():
     res = client.get(f"/api/graph?workspace_id={WORKSPACE_ID}")
@@ -78,6 +103,21 @@ def test_api_workflow_and_deliverable():
     assert res_deliv.status_code == 200
     assert res_deliv.json()["status"] == "COMPLETED"
 
+    # Verify memory recall has complete provenance for the workflow-created memory
+    res_mem = client.get(f"/api/memory/recall?workspace_id={WORKSPACE_ID}")
+    assert res_mem.status_code == 200
+    mems = res_mem.json()
+    wf_mem = next((m for m in mems if m["type"] == "WORKFLOW_FINDING"), None)
+    assert wf_mem is not None
+    assert wf_mem["originating_task"] is not None
+    assert wf_mem["originating_task"]["id"] is not None
+    assert wf_mem["evidence"] is not None
+    assert wf_mem["evidence"]["id"] is not None
+    assert wf_mem["evidence"]["excerpt"]
+    assert wf_mem["source"] is not None
+    assert wf_mem["source"]["title"] is not None
+    assert len(wf_mem.get("evidence_citations", [])) >= 1
+
 def test_api_supersession_and_memory():
     # Trigger supersession
     res = client.post("/api/freshness/supersede", json={
@@ -101,8 +141,9 @@ def test_api_generality_workflow():
     res = client.post(f"/api/generality/run?workspace_id={WORKSPACE_ID}")
     assert res.status_code == 200
     data = res.json()
-    assert "Generality check successfully executed" in data["message"]
-    assert len(data["result"]["agent_turns"]) == 4
+    assert len(data["result"]["agent_turns"]) >= 3
+    # Verify dynamic routing selected the infrastructure specialist (emp_prior_dev) instead of fixed payments engineer
+    assert any(t["employee_id"] == "emp_prior_dev" for t in data["result"]["agent_turns"])
 
 if __name__ == "__main__":
     pytest.main(["-s", __file__])

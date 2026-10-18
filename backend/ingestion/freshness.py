@@ -15,7 +15,7 @@ def supersede_ownership_fact(
 ) -> Dict[str, Any]:
     """Demonstrate live fact supersession: Mark active fact as SUPERSEDED, create new ACTIVE fact, link SUPERSEDES, and update evidence."""
     now_iso = datetime.now(timezone.utc).isoformat()
-    ts = int(datetime.now(timezone.utc).timestamp())
+    ts = int(datetime.now(timezone.utc).timestamp() * 1000000)
 
     # 1. Fetch current active fact
     active_rows = db_client.query("""
@@ -63,6 +63,8 @@ def supersede_ownership_fact(
     ON CREATE SET f.predicate = 'OWNS_PROJECT', f.value = $new_owner, f.status = 'ACTIVE',
                   f.confidence = 1.0, f.valid_from = $now_iso, f.valid_until = null,
                   f.observed_at = $now_iso, f.extraction_method = 'DEMO_SUPERSESSION_ACTION'
+    ON MATCH SET f.predicate = 'OWNS_PROJECT', f.value = $new_owner, f.status = 'ACTIVE',
+                 f.valid_from = $now_iso, f.valid_until = null
     """, {"ws": workspace_id, "new_fid": new_fact_id, "new_owner": new_owner_id, "now_iso": now_iso})
 
     # 5. Link new Fact to Project, Employee, Evidence, Source, and link SUPERSEDES to prior fact
@@ -101,6 +103,28 @@ def supersede_ownership_fact(
         "history": get_ownership_history(workspace_id, project_id)
     }
 
+def toggle_ownership_fact(
+    workspace_id: str = DEFAULT_WORKSPACE_ID,
+    project_id: str = "proj_payments_v2"
+) -> Dict[str, Any]:
+    """Toggle current active owner between Asha Patel (emp_engineer) and Marcus Chen (emp_eng_manager) to prove graph operational state."""
+    owner_info = get_current_owner(workspace_id, project_id)
+    current_emp_id = owner_info.get("employee_id") if owner_info else None
+
+    if current_emp_id == "emp_engineer":
+        new_owner_id = "emp_eng_manager"
+        text = "Marcus Chen (@marcus) has assumed direct operational ownership of Payments API v2 and Payments Settlement Service."
+    else:
+        new_owner_id = "emp_engineer"
+        text = "Asha Patel (@asha) has reassumed technical ownership of Payments API v2 and Payments Settlement Service."
+
+    return supersede_ownership_fact(
+        workspace_id=workspace_id,
+        project_id=project_id,
+        new_owner_id=new_owner_id,
+        announcement_text=text
+    )
+
 def recall_cross_session_memory(
     workspace_id: str = DEFAULT_WORKSPACE_ID,
     search_query: str = "Payments API"
@@ -116,16 +140,26 @@ def recall_cross_session_memory(
     ORDER BY m.created_at DESC
     """
     rows = db_client.query(cypher, {"ws": workspace_id})
-    memories = []
+    mem_map: Dict[str, Dict[str, Any]] = {}
     for r in rows:
-        memories.append({
-            "memory_id": r[0],
-            "type": r[1],
-            "content": r[2],
-            "created_at": r[3],
-            "project": {"id": r[4], "name": r[5]} if r[4] else None,
-            "originating_task": {"id": r[6], "title": r[7]} if r[6] else None,
-            "evidence": {"id": r[8], "excerpt": r[9]} if r[8] else None,
-            "source": {"title": r[10], "uri": r[11]} if r[10] else None
-        })
-    return memories
+        mid = r[0]
+        if mid not in mem_map:
+            mem_map[mid] = {
+                "memory_id": mid,
+                "type": r[1],
+                "content": r[2],
+                "created_at": r[3],
+                "project": {"id": r[4], "name": r[5]} if r[4] else None,
+                "originating_task": {"id": r[6], "title": r[7]} if r[6] else None,
+                "evidence": {"id": r[8], "excerpt": r[9]} if r[8] else None,
+                "source": {"title": r[10], "uri": r[11]} if r[10] else None,
+                "evidence_citations": []
+            }
+        if r[8]:
+            mem_map[mid]["evidence_citations"].append({
+                "evidence_id": r[8],
+                "excerpt": r[9],
+                "source_title": r[10],
+                "source_uri": r[11]
+            })
+    return list(mem_map.values())

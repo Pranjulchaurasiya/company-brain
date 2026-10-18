@@ -3,207 +3,1113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Company Brain — Multi-Agent AI on FalkorDB</title>
-  <meta name="description" content="Company Brain: An AI company whose employee-agents collaborate across connected company context using FalkorDB as canonical state.">
+  <title>Company Brain — Autonomous Multi-Agent Swarm on FalkorDB</title>
+  <meta name="description" content="Stateful execution, deterministic checkpoints, and enterprise graph guardrails for multi-agent swarms running on FalkorDB canonical memory.">
   
-  <!-- Modern Google Fonts -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  
+  <!-- Modern Typography (Plus Jakarta Sans, Inter, JetBrains Mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=4.3">
+
+  <!-- 3D Engine Scripts (Three.js + OrbitControls + Brain3D) -->
+  <script src="three.min.js?v=4.1"></script>
+  <script src="OrbitControls.js?v=4.1"></script>
+  <script src="brain3d.js?v=4.1"></script>
 </head>
-<body>
-  <!-- Synthetic Notice Banner -->
-  <div class="synthetic-banner" id="syntheticBanner">
-    <span class="pulse-indicator"></span>
-    <strong>REVIEWER ENVIRONMENT:</strong> Preloaded synthetic dataset. Slack & GitHub records are simulated connectors with full provenance in FalkorDB. Zero login or external accounts required.
-  </div>
+<body class="qronos-body dark-mode">
 
-  <!-- Header -->
-  <header class="app-header">
-    <div class="header-left">
-      <div class="logo-group">
-        <div class="logo-icon">🧠</div>
-        <div>
-          <h1 class="logo-title">Company Brain</h1>
-          <span class="logo-subtitle">Multi-Agent Knowledge Graph Architecture</span>
-        </div>
-      </div>
-      <div class="db-badge" id="dbStatusBadge">
-        <span class="status-dot healthy"></span>
-        <span id="dbStatusText">FalkorDB: Connected</span>
-      </div>
-    </div>
+  <!-- =========================================================================
+       FRAME 1: HERO & FLOATING PILL NAVBAR (COMPANY BRAIN BRANDED)
+       ========================================================================= -->
+  
+  <!-- Floating Pill Navbar with 4 Corner Crosshairs -->
+  <header class="qronos-nav-wrapper">
+    <div class="qronos-navbar has-corner-crosshairs">
+      <div class="corner-ch ch-tl">+</div>
+      <div class="corner-ch ch-tr">+</div>
+      <div class="corner-ch ch-bl">+</div>
+      <div class="corner-ch ch-br">+</div>
 
-    <div class="header-center">
-      <div class="workspace-pill">
-        <span class="pill-label">Workspace:</span>
-        <span class="pill-val" id="wsLabel">ws_company_prime</span>
-      </div>
-      <div class="graph-stats-pill">
-        <span id="nodeCount">0</span> Nodes &bull; <span id="edgeCount">0</span> Relationships
-      </div>
-    </div>
+      <!-- Left: Company Brain Brand -->
+      <a href="#about" class="q-nav-brand">
+        <svg class="q-logo-mark" width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke="#c084fc" stroke-width="2"/>
+          <path d="M12 3C8 8 8 16 12 21" stroke="white" stroke-width="1.8"/>
+          <path d="M12 3C16 8 16 16 12 21" stroke="white" stroke-width="1.8"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="#a855f7" stroke-width="2"/>
+          <circle cx="12" cy="12" r="3" fill="#10b981"/>
+        </svg>
+        <span class="q-brand-name">COMPANY BRAIN</span>
+      </a>
 
-    <div class="header-right">
-      <button class="btn btn-secondary" id="resetBtn" title="Reset workspace to clean initial seed">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-        Reset Demo
-      </button>
-      <button class="btn btn-primary" id="runStarterGoalBtn">
-        <span>⚡</span> Run Payments Goal
-      </button>
+      <!-- Center Links -->
+      <nav class="q-nav-links">
+        <a href="#about" class="q-link active">Overview</a>
+        <a href="#features" class="q-link">Agent Pipeline</a>
+        <a href="#guardrails" class="q-link">Guardrails</a>
+        <a href="#insights" class="q-link">Telemetry</a>
+        <a href="/gallery.html" target="_blank" class="q-link">Design Gallery</a>
+        <button id="navOpenFalkorBtn" class="q-link-pill">
+          <span class="pulse-dot"></span> FalkorDB Engine
+        </button>
+      </nav>
+
+      <!-- Right: Star-Glow CTA Button -->
+      <div class="q-nav-actions">
+        <button class="btn-star-border" id="topGetStartedBtn">
+          <span class="star-border-glow"></span>
+          <span class="star-btn-inner">LAUNCH SWARM &gt;&gt;</span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="main-layout">
-    <!-- Left Column: Controls & Execution -->
-    <section class="left-pane">
-      
-      <!-- Goal Intake Card -->
-      <div class="card glass-card">
-        <div class="card-header">
-          <div class="card-title">
-            <span class="card-icon">🎯</span>
-            <h2>Company Objective & Coordinator</h2>
-          </div>
-          <span class="badge badge-accent">Autonomous Loop (Max 5 Turns)</span>
-        </div>
+  <!-- Hero Section -->
+  <section class="q-hero-section" id="about">
+    <!-- Particle Canvas & Vortex Overlay -->
+    <div class="q-vortex-container">
+      <canvas id="particleCanvas" class="q-particle-canvas"></canvas>
+      <div class="q-vortex-bg"></div>
+    </div>
 
-        <div class="card-body">
-          <label for="goalInput" class="input-label">Company Goal:</label>
-          <textarea id="goalInput" class="goal-textarea" rows="3">Prepare Payments API for the next release. Find the current owner, explain the unresolved risk and the decision behind it, then coordinate the next investigation.</textarea>
+    <!-- Hero Content -->
+    <div class="q-hero-content">
+      <div class="q-hero-badge has-corner-crosshairs">
+        <span class="corner-ch ch-tl">+</span>
+        <span class="corner-ch ch-tr">+</span>
+        <span class="corner-ch ch-bl">+</span>
+        <span class="corner-ch ch-br">+</span>
+        <span class="badge-dot"></span>
+        <span>AUTONOMOUS MULTI-AGENT SWARM &bull; FALKORDB CANONICAL GRAPH</span>
+      </div>
+
+      <h1 class="q-hero-title">
+        The collective intelligence<br>
+        system for autonomous enterprises
+      </h1>
+
+      <p class="q-hero-subtitle">
+        Coordinate employee agents across every repository, PR, and decision.<br>
+        FalkorDB graph memory keeps every run grounded, verifiable, and in control.
+      </p>
+
+      <div class="q-hero-cta-group">
+        <button class="btn-star-border btn-hero-lg" id="heroGetStartedBtn">
+          <span class="star-border-glow"></span>
+          <span class="star-btn-inner">LAUNCH SWARM &gt;&gt;</span>
+        </button>
+        <button class="btn-hero-white" id="requestDemoBtn">
+          VIEW 3D TOPOLOGY
+        </button>
+      </div>
+    </div>
+
+    <!-- Bottom Partner Logo Marquee Strip -->
+    <div class="q-marquee-strip">
+      <div class="q-marquee-track">
+        <div class="q-marquee-group">
+          <div class="q-logo-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="#a855f7" style="margin-right:6px;"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span style="color:#a855f7; font-weight:800;">FalkorDB</span></div>
+          <div class="q-logo-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg> <span>GitHub PRs</span></div>
+          <div class="q-logo-item"><span>Slack Ground Truth</span></div>
+          <div class="q-logo-item"><svg width="16" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L24 22H0L12 1Z"/></svg> <span>ADR Decisions</span></div>
+          <div class="q-logo-item"><span style="color:#60a5fa; font-weight:700;">Google Gemini</span></div>
+          <div class="q-logo-item"><span style="color:#f59e0b; font-weight:700;">Anthropic Claude</span></div>
+          <div class="q-logo-item"><span style="color:#10b981; font-weight:700;">OpenAI Codex</span></div>
+          <div class="q-logo-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11 2L2 13h9l-1 9 12-14h-9l1-6z"/></svg> <span>Redis Protocol</span></div>
+          <div class="q-logo-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15 9H9L12 2ZM22 12L15 15V9L22 12ZM12 22L9 15H15L12 22ZM2 12L9 9V15L2 12Z"/></svg> <span>Snowflake Lakehouse</span></div>
+        </div>
+        <div class="q-marquee-group" aria-hidden="true">
+          <div class="q-logo-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="#a855f7" style="margin-right:6px;"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span style="color:#a855f7; font-weight:800;">FalkorDB</span></div>
+          <div class="q-logo-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg> <span>GitHub PRs</span></div>
+          <div class="q-logo-item"><span>Slack Ground Truth</span></div>
+          <div class="q-logo-item"><svg width="16" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L24 22H0L12 1Z"/></svg> <span>ADR Decisions</span></div>
+          <div class="q-logo-item"><span style="color:#60a5fa; font-weight:700;">Google Gemini</span></div>
+          <div class="q-logo-item"><span style="color:#f59e0b; font-weight:700;">Anthropic Claude</span></div>
+          <div class="q-logo-item"><span style="color:#10b981; font-weight:700;">OpenAI Codex</span></div>
+          <div class="q-logo-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11 2L2 13h9l-1 9 12-14h-9l1-6z"/></svg> <span>Redis Protocol</span></div>
+          <div class="q-logo-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15 9H9L12 2ZM22 12L15 15V9L22 12ZM12 22L9 15H15L12 22ZM2 12L9 9V15L2 12Z"/></svg> <span>Snowflake Lakehouse</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       FRAME 2: STATEFUL EXECUTION & AGENT PIPELINE SCHEDULER
+       ========================================================================= -->
+  <section class="q-section q-frame2-section" id="features">
+    <div class="q-container">
+      
+      <!-- Split Header -->
+      <div class="q-split-header">
+        <div class="q-split-left">
+          <h2 class="q-section-title">
+            Stateful execution.<br>
+            <span class="text-gradient-purple">Company Brain keeps agents in motion.</span>
+          </h2>
+        </div>
+        <div class="q-split-right">
+          <p class="q-section-desc">
+            Deterministic sequential handoffs across Chief of Staff, Engineering Manager, Staff Engineer, and Knowledge Manager—grounded in FalkorDB.
+          </p>
+        </div>
+      </div>
+
+      <!-- Centerpiece Interactive Dashboard Container -->
+      <div class="q-dashboard-shell has-corner-crosshairs">
+        <div class="corner-ch ch-tl">+</div>
+        <div class="corner-ch ch-tr">+</div>
+        <div class="corner-ch ch-bl">+</div>
+        <div class="corner-ch ch-br">+</div>
+
+        <!-- Dashboard Layout: Left Sidebar + Right Timeline -->
+        <div class="q-dash-body">
           
-          <div class="actions-row">
-            <button class="btn btn-primary" id="submitGoalBtn">
-              <span class="btn-spinner" id="btnSpinner"></span>
-              <span id="btnText">Coordinate Employees</span>
-            </button>
-            <button class="btn btn-outline" id="supersedeBtn" title="Demonstrate live fact replacement">
-              <span>⚡</span> Supersede Ownership
-            </button>
-            <button class="btn btn-outline" id="recallMemoryBtn" title="Test session memory without chat history">
-              <span>🧠</span> Recall Memory
-            </button>
-            <button class="btn btn-outline" id="generalityBtn" title="Run non-payments company workflow">
-              <span>🌐</span> Generality Check
-            </button>
-          </div>
-
-          <!-- Suggested Quick Queries -->
-          <div class="quick-questions">
-            <span class="quick-label">Grounded Queries:</span>
-            <div class="chips-container">
-              <button class="chip" data-query="owner">👤 Current Owner</button>
-              <button class="chip" data-query="risks">⚠️ Unresolved Blockers (PAY-104)</button>
-              <button class="chip" data-query="decisions">📜 Decision Rationale (ADR-0042)</button>
-              <button class="chip" data-query="multi-hop">🔗 Multi-Hop Path</button>
+          <!-- Left Sidebar -->
+          <aside class="q-dash-sidebar">
+            <div class="q-dash-brand-row">
+              <div class="q-dash-brand">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="#10b981"/><path d="M12 3C8 8 8 16 12 21M12 3C16 8 16 16 12 21"/></svg>
+                <span>Company Brain</span>
+                <svg class="chevron-sm" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="q-dash-brand-tools">
+                <span class="dash-icon-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+                <span class="dash-icon-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Live Execution Timeline -->
-      <div class="card glass-card timeline-card">
-        <div class="card-header">
-          <div class="card-title">
-            <span class="card-icon">🤝</span>
-            <h2>Employee Handoff Timeline</h2>
-          </div>
-          <div class="handoff-protocol-badge">
-            REQUEST &rarr; ACKNOWLEDGE &rarr; INVESTIGATE &rarr; REPORT &rarr; CLOSE
-          </div>
-        </div>
+            <nav class="q-dash-nav">
+              <a href="javascript:void(0)" class="q-side-item" id="sideInboxBtn">
+                <span class="side-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span> Agent Inbox
+              </a>
+              <a href="javascript:void(0)" class="q-side-item" id="sideMyAgentsBtn">
+                <span class="side-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Employee Swarm
+              </a>
+              <a href="javascript:void(0)" class="q-side-item" id="sideRunHistoryBtn">
+                <span class="side-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span> Run history
+              </a>
+              <a href="javascript:void(0)" class="q-side-item" id="sidePulseBtn">
+                <span class="side-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span> Graph Pulse
+              </a>
 
-        <div class="card-body">
-          <div id="timelineContainer" class="timeline-container">
-            <div class="timeline-empty-state">
-              <div class="empty-icon">👥</div>
-              <p>No active workflow. Click <strong>Run Payments Goal</strong> above to observe Chief of Staff, Engineering Manager, Staff Engineer, and Knowledge Manager collaborate across FalkorDB.</p>
+              <div class="q-side-section-label">
+                <span>Workspace</span> <svg class="chevron-xs" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <a href="javascript:void(0)" class="q-side-item">
+                <span class="side-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span> Employees
+              </a>
+              <a href="javascript:void(0)" class="q-side-item active" id="sideSchedulesBtn">
+                <span class="side-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span> Agent Pipeline
+              </a>
+              <a href="javascript:void(0)" class="q-side-item" onclick="openFalkorDrawer()">
+                <span class="side-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span> FalkorDB State
+              </a>
+
+              <div class="q-side-section-label">
+                <span>Active Projects</span> <svg class="chevron-xs" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <a href="javascript:void(0)" class="q-side-item" onclick="openFalkorDrawer()">
+                <span class="side-bullet bullet-amber"></span> payment-gateway
+              </a>
+              <a href="javascript:void(0)" class="q-side-item" onclick="openFalkorDrawer()">
+                <span class="side-bullet bullet-cyan"></span> PR #13 Audit
+              </a>
+              <a href="javascript:void(0)" class="q-side-item" onclick="openFalkorDrawer()">
+                <span class="side-bullet bullet-rose"></span> ADR-002 Grounding
+              </a>
+            </nav>
+          </aside>
+
+          <!-- Right Timeline Gantt Grid -->
+          <main class="q-dash-timeline">
+            <!-- Timeline Month / Date Header -->
+            <div class="q-tl-header">
+              <div class="q-tl-month aug-marker">STAGE</div>
+              <div class="q-tl-dates">
+                <span>1 · PLAN</span>
+                <span>2 · DELEGATE</span>
+                <span>3 · INVESTIGATE</span>
+                <span>4 · VERIFY</span>
+                <span>5 · CLOSE</span>
+              </div>
+              <div class="q-tl-month sep-marker">STATUS</div>
+              <div class="q-tl-dates sep-dates">
+                <span>SYNC</span>
+                <span>AUDIT</span>
+              </div>
             </div>
-          </div>
+
+            <!-- Gantt Tracks -->
+            <div class="q-tl-tracks">
+              
+              <!-- Track 1: Chief of Staff -->
+              <div class="q-track-row" data-agent="emp_chief_of_staff">
+                <div class="q-track-meta">
+                  <span class="track-indicator ind-blue"></span>
+                  <span class="track-name">Chief of Staff</span>
+                  <span class="track-trigger">Stage 1 · Bounded Planning</span>
+                </div>
+                <div class="q-track-lane">
+                  <div class="q-gantt-capsule capsule-blue" style="left: 4%; width: 52%;">
+                    <div class="capsule-node"><span class="node-diamond"></span> Goal Ingestion</div>
+                    <div class="capsule-node node-active"><span class="node-diamond-glow"></span> Bounded Plan</div>
+                    <div class="capsule-gradient-tail"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Track 2: Engineering Manager -->
+              <div class="q-track-row" data-agent="emp_eng_manager">
+                <div class="q-track-meta">
+                  <span class="track-indicator ind-emerald"></span>
+                  <span class="track-name">Engineering Manager</span>
+                  <span class="track-trigger">Stage 2 · Task Delegation</span>
+                </div>
+                <div class="q-track-lane">
+                  <div class="q-gantt-capsule capsule-emerald" style="left: 18%; width: 58%;">
+                    <div class="capsule-node"><span class="node-diamond"></span> Skill Matrix</div>
+                    <div class="capsule-node node-active"><span class="node-diamond-glow"></span> Task PAY-104</div>
+                    <div class="capsule-gradient-tail"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Track 3: Staff Engineer -->
+              <div class="q-track-row" data-agent="emp_engineer">
+                <div class="q-track-meta">
+                  <span class="track-indicator ind-indigo"></span>
+                  <span class="track-name">Staff Engineer</span>
+                  <span class="track-trigger">Stage 3 · Code & PR Investigation</span>
+                </div>
+                <div class="q-track-lane">
+                  <div class="q-gantt-capsule capsule-indigo" style="left: 32%; width: 56%;">
+                    <div class="capsule-node"><span class="node-diamond"></span> PR #13 Audit</div>
+                    <div class="capsule-node"><span class="node-diamond"></span> Diff Check</div>
+                    <div class="capsule-node node-blue"><span class="node-diamond"></span> ADR-002 Grounding</div>
+                    <div class="capsule-gradient-tail tail-blue"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Track 4: Knowledge Manager -->
+              <div class="q-track-row" data-agent="emp_knowledge_mgr">
+                <div class="q-track-meta">
+                  <span class="track-indicator ind-purple"></span>
+                  <span class="track-name">Knowledge Manager</span>
+                  <span class="track-trigger">Stage 4 · Fact Supersession</span>
+                </div>
+                <div class="q-track-lane">
+                  <div class="q-gantt-capsule capsule-purple" style="left: 48%; width: 44%;">
+                    <div class="capsule-node"><span class="node-diamond"></span> Bi-Temporal Audit</div>
+                    <div class="capsule-node"><span class="node-diamond"></span> Fact Supersession</div>
+                  </div>
+                  <!-- Connector Line down to Deliverable -->
+                  <div class="q-sub-track" style="left: 78%;">
+                    <span class="track-indicator ind-amber"></span>
+                    <span class="track-name">Deliverable Closed</span>
+                    <span class="track-trigger">Accepted</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </main>
+
         </div>
       </div>
 
-      <!-- Deliverable Viewer Card -->
-      <div class="card glass-card deliverable-card" id="deliverableCard" style="display: none;">
-        <div class="card-header">
-          <div class="card-title">
-            <span class="card-icon">📄</span>
-            <h2>Saved Company Deliverable</h2>
-          </div>
-          <span class="badge badge-success" id="deliverableStatusBadge">COMPLETED</span>
-        </div>
-        <div class="card-body">
-          <div id="deliverableContent" class="deliverable-body"></div>
-        </div>
-      </div>
+    </div>
+  </section>
 
-    </section>
 
-    <!-- Right Column: Graph Canvas & Provenance Citations -->
-    <section class="right-pane">
+  <!-- =========================================================================
+       FRAME 3: DURABLE BY DEFAULT / GUARDRAILS & AGENT INBOX
+       ========================================================================= -->
+  <section class="q-section q-frame3-section" id="guardrails">
+    <div class="q-container">
       
-      <!-- Relationship Graph Visualization -->
-      <div class="card glass-card graph-card">
-        <div class="card-header">
-          <div class="card-title">
-            <span class="card-icon">🕸️</span>
-            <h2>FalkorDB Relationship Topology</h2>
+      <div class="q-bento-dual-grid">
+
+        <!-- Left Bento Card: Built-in Guardrails -->
+        <div class="q-bento-col">
+          <div class="q-card-mockup has-corner-crosshairs" id="guardrailsCard">
+            <div class="corner-ch ch-tl">+</div>
+            <div class="corner-ch ch-tr">+</div>
+            <div class="corner-ch ch-bl">+</div>
+            <div class="corner-ch ch-br">+</div>
+
+            <div class="q-policy-list">
+              <div class="q-policy-row">
+                <div class="q-policy-info">
+                  <div class="q-policy-title">Daily LLM inference budget</div>
+                  <div class="q-policy-sub">Prevent runaway model spend across agents</div>
+                </div>
+                <div class="q-select-pill">
+                  <span>Enforce</span> <svg class="chevron-xs" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+              </div>
+
+              <div class="q-policy-row">
+                <div class="q-policy-info">
+                  <div class="q-policy-title">Sequential turn limit</div>
+                  <div class="q-policy-sub">Hard cap at 5 turns per handoff cycle</div>
+                </div>
+                <div class="q-select-pill">
+                  <span>Enforce</span> <svg class="chevron-xs" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+              </div>
+
+              <!-- Sensitive tools with Open Dropdown Popover -->
+              <div class="q-policy-row has-active-popover">
+                <div class="q-policy-info">
+                  <div class="q-policy-title">Sensitive tool mutations</div>
+                  <div class="q-policy-sub">Hold destructive graph updates for human signoff</div>
+                </div>
+                <div class="q-select-pill active" id="sensitiveSelectBtn">
+                  <span>Require approval</span> <svg class="chevron-xs" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+
+                <!-- Floating Dropdown Popover Mockup -->
+                <div class="q-floating-popover" id="guardrailPopover">
+                  <div class="q-popover-header">Require approval</div>
+                  <div class="q-popover-item">Monitor</div>
+                  <div class="q-popover-item checked">
+                    <span>Require approval</span>
+                    <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <div class="q-popover-item">Block</div>
+                </div>
+              </div>
+
+              <div class="q-policy-row">
+                <div class="q-policy-info">
+                  <div class="q-policy-title">Evidence grounding invariant</div>
+                  <div class="q-policy-sub">Zero assertions allowed without Evidence IDs</div>
+                </div>
+                <div class="q-select-pill">
+                  <span>Strict Reject</span> <svg class="chevron-xs" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+              </div>
+
+              <div class="q-policy-row">
+                <div class="q-policy-info">
+                  <div class="q-policy-title">Fact supersession gate</div>
+                  <div class="q-policy-sub">Bi-temporal valid_until check prevents stale overwrite</div>
+                </div>
+                <div class="q-select-pill">
+                  <span>Enforce</span> <svg class="chevron-xs" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+              </div>
+
+              <div class="q-policy-row">
+                <div class="q-policy-info">
+                  <div class="q-policy-title">Role-based tool access</div>
+                  <div class="q-policy-sub">Restrict agents to role permissions in FalkorDB</div>
+                </div>
+                <div class="q-select-pill">
+                  <span>Enforce</span> <svg class="chevron-xs" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="graph-legend">
-            <span class="legend-dot emp-dot"></span> Employee
-            <span class="legend-dot proj-dot"></span> Project
-            <span class="legend-dot fact-dot"></span> Fact
-            <span class="legend-dot src-dot"></span> Source
+
+          <div class="q-card-footer-text">
+            <h3 class="q-card-heading">Built-in enterprise guardrails</h3>
+            <p class="q-card-desc">Budget caps, permission gates, and strict grounding invariants keep autonomous work focused, bounded, and safe.</p>
           </div>
         </div>
-        <div class="card-body graph-canvas-container">
-          <svg id="graphSvg" class="graph-svg"></svg>
-          <div class="graph-overlay-info" id="graphOverlayInfo">
-            Click any node to inspect properties and provenance edges.
+
+        <!-- Right Bento Card: Agent Inbox -->
+        <div class="q-bento-col">
+          <div class="q-card-mockup has-corner-crosshairs" id="inboxCard">
+            <div class="corner-ch ch-tl">+</div>
+            <div class="corner-ch ch-tr">+</div>
+            <div class="corner-ch ch-bl">+</div>
+            <div class="corner-ch ch-br">+</div>
+
+            <div class="q-inbox-header">
+              <div class="q-inbox-title">Agent Inbox &bull; Verified Feed <span class="dots">···</span></div>
+              <div class="q-inbox-tools">
+                <span class="dash-icon-btn" style="display:inline-flex;padding:3px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></span> <span class="dash-icon-btn" style="display:inline-flex;padding:3px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg></span>
+              </div>
+            </div>
+
+            <div class="q-inbox-feed">
+              
+              <!-- Feed Item 1: PAY-104 Plan -->
+              <div class="q-inbox-item" onclick="openFalkorDrawer()">
+                <div class="inbox-avatar-wrap">
+                  <div class="avatar-shape shape-diamond-multi"></div>
+                  <span class="badge-mini check-badge"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                </div>
+                <div class="inbox-body">
+                  <div class="inbox-row-top">
+                    <span class="inbox-item-title">PAY-104 ownership plan ready</span>
+                    <span class="inbox-time">8m</span>
+                  </div>
+                  <div class="inbox-item-sub">Chief of Staff delivered plan &rarr; Eng Manager assigned</div>
+                </div>
+              </div>
+
+              <!-- Feed Item 2: Discrepancy detected -->
+              <div class="q-inbox-item" onclick="openFalkorDrawer()">
+                <div class="inbox-avatar-wrap">
+                  <div class="avatar-shape shape-spiral-white"></div>
+                  <span class="badge-mini alert-badge"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+                </div>
+                <div class="inbox-body">
+                  <div class="inbox-row-top">
+                    <span class="inbox-item-title">Discrepancy: PR #13 vs ADR-002</span>
+                    <span class="inbox-time">1h</span>
+                  </div>
+                  <div class="inbox-item-sub">Staff Engineer flagged conflicting payment-gateway owner</div>
+                </div>
+              </div>
+
+              <!-- Feed Item 3: Approval required -->
+              <div class="q-inbox-item" onclick="openFalkorDrawer()">
+                <div class="inbox-avatar-wrap">
+                  <div class="avatar-shape shape-sunburst-orange"></div>
+                  <span class="badge-mini danger-badge"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2.5"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+                </div>
+                <div class="inbox-body">
+                  <div class="inbox-row-top">
+                    <span class="inbox-item-title">Approval required: Reassign Service</span>
+                    <span class="inbox-time">4h</span>
+                  </div>
+                  <div class="inbox-item-sub">Eng Manager proposed reassigning payment-gateway to team_payments</div>
+                </div>
+              </div>
+
+              <!-- Feed Item 4: Fact supersession complete -->
+              <div class="q-inbox-item" onclick="openFalkorDrawer()">
+                <div class="inbox-avatar-wrap">
+                  <div class="avatar-shape shape-sunburst-orange"></div>
+                  <span class="badge-mini check-badge"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                </div>
+                <div class="inbox-body">
+                  <div class="inbox-row-top">
+                    <span class="inbox-item-title">Fact supersession complete (Fact #42)</span>
+                    <span class="inbox-time">1d</span>
+                  </div>
+                  <div class="inbox-item-sub">Knowledge Manager invalidated stale owner, created new ACTIVE fact</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="q-card-footer-text">
+            <h3 class="q-card-heading">Agent Inbox &amp; Audit Feed</h3>
+            <p class="q-card-desc">Review completed deliverables, human approval requests, and grounding alerts in one unified stream.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       FRAME 4: INSIGHTS & REAL-TIME TELEMETRY (COMPANY BRAIN TELEMETRY)
+       ========================================================================= -->
+  <section class="q-section q-frame4-section" id="insights">
+    <div class="q-container">
+      
+      <div class="q-header-center">
+        <h2 class="q-section-title">Track multi-agent graph telemetry in real-time.</h2>
+        <p class="q-section-desc">Live goal velocity, FalkorDB node provenance, and model token distribution across every agent turn.</p>
+      </div>
+
+      <!-- Centerpiece Insights Dashboard Frame -->
+      <div class="q-dashboard-shell has-corner-crosshairs">
+        <div class="corner-ch ch-tl">+</div>
+        <div class="corner-ch ch-tr">+</div>
+        <div class="corner-ch ch-bl">+</div>
+        <div class="corner-ch ch-br">+</div>
+
+        <div class="q-dash-body">
+          
+          <!-- Left Sidebar (Insights Active) -->
+          <aside class="q-dash-sidebar">
+            <div class="q-dash-brand-row">
+              <div class="q-dash-brand">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="#10b981"/><path d="M12 3C8 8 8 16 12 21M12 3C16 8 16 16 12 21"/></svg>
+                <span>Company Brain</span>
+                <svg class="chevron-sm" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="q-dash-brand-tools">
+                <span class="dash-icon-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+                <span class="dash-icon-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+              </div>
+            </div>
+
+            <nav class="q-dash-nav">
+              <a href="javascript:void(0)" class="q-side-item">
+                <span class="side-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span> Agent Inbox
+              </a>
+              <a href="javascript:void(0)" class="q-side-item active">
+                <span class="side-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="7" width="4" height="14"/><rect x="17" y="3" width="4" height="18"/></svg></span> Graph Telemetry
+              </a>
+              <a href="javascript:void(0)" class="q-side-item">
+                <span class="side-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Employee Swarm
+              </a>
+              <a href="javascript:void(0)" class="q-side-item">
+                <span class="side-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span> Run history
+              </a>
+              <a href="javascript:void(0)" class="q-side-item">
+                <span class="side-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span> Graph Pulse
+              </a>
+
+              <div class="q-side-section-label">
+                <span>Workspace</span> <svg class="chevron-xs" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <a href="javascript:void(0)" class="q-side-item">
+                <span class="side-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span> Employees
+              </a>
+              <a href="javascript:void(0)" class="q-side-item">
+                <span class="side-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span> Agent Pipeline
+              </a>
+              <a href="javascript:void(0)" class="q-side-item" onclick="openFalkorDrawer()">
+                <span class="side-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span> FalkorDB State
+              </a>
+            </nav>
+          </aside>
+
+          <!-- Insights Main Area -->
+          <main class="q-dash-insights-content">
+            <div class="insights-top-bar">
+              <div class="insights-title">Enterprise Knowledge Telemetry <span class="dots">···</span></div>
+            </div>
+
+            <!-- Top Metric Cards Row -->
+            <div class="insights-metrics-grid">
+              
+              <div class="insight-stat-card">
+                <div class="stat-label">FalkorDB Graph State</div>
+                <div class="stat-number"><span id="nodeCountHero">69</span> / <span id="edgeCountHero">83</span></div>
+                <div class="stat-footnote" style="margin-top:4px;">Nodes &bull; Verified Edges</div>
+              </div>
+
+              <div class="insight-stat-card">
+                <div class="stat-label">Grounded Claims Ratio</div>
+                <div class="stat-number" style="color:#10b981;">100%</div>
+                <div class="stat-footnote" style="margin-top:4px;">0 Unverified Assertions</div>
+              </div>
+
+              <div class="insight-stat-card">
+                <div class="stat-label">Graph Query Latency (P99)</div>
+                <div class="stat-number" style="color:#a855f7;">1.8<span style="font-size:18px;">ms</span></div>
+                <div class="stat-footnote" style="margin-top:4px;">Redis Binary Protocol</div>
+              </div>
+
+              <div class="insight-stat-card budget-card">
+                <div class="stat-label-row">
+                  <span>Daily inference spend</span>
+                  <span class="live-pill"><span class="live-dot"></span> Live</span>
+                </div>
+                <div class="stat-number-sm">$4.82 <span class="stat-denom">/ $25.00</span></div>
+                <div class="stat-bar-track">
+                  <div class="stat-bar-fill" style="width: 19.3%;"></div>
+                </div>
+                <div class="stat-footnote">19.3% allocated across active runs</div>
+              </div>
+
+            </div>
+
+            <!-- Bottom Row: Assignee Stacked Chart + Project Table -->
+            <div class="insights-charts-grid">
+              
+              <!-- Stacked Bar Chart -->
+              <div class="chart-panel">
+                <div class="panel-header">Turn velocity per employee agent</div>
+                <div class="stacked-chart-viewport">
+                  <div class="chart-y-axis">
+                    <span>180</span>
+                    <span>160</span>
+                    <span>140</span>
+                    <span>120</span>
+                    <span>100</span>
+                    <span>80</span>
+                    <span>60</span>
+                    <span>40</span>
+                    <span>20</span>
+                    <span>0</span>
+                  </div>
+                  
+                  <div class="chart-bars-wrap">
+                    <!-- 14 stacked vertical bars matching employee initials -->
+                    <div class="chart-bar-col"><div class="bar-segment seg-white" style="height: 38px;"></div><div class="bar-segment seg-purple" style="height: 72px;"></div><div class="bar-segment seg-gold" style="height: 24px;"></div><span class="assignee-tag">CS</span></div>
+                    <div class="chart-bar-col"><div class="bar-segment seg-white" style="height: 32px;"></div><div class="bar-segment seg-purple" style="height: 60px;"></div><div class="bar-segment seg-gold" style="height: 20px;"></div><span class="assignee-tag">EM</span></div>
+                    <div class="chart-bar-col"><div class="bar-segment seg-white" style="height: 28px;"></div><div class="bar-segment seg-purple" style="height: 54px;"></div><div class="bar-segment seg-gold" style="height: 18px;"></div><span class="assignee-tag">SE</span></div>
+                    <div class="chart-bar-col"><div class="bar-segment seg-white" style="height: 28px;"></div><div class="bar-segment seg-purple" style="height: 54px;"></div><div class="bar-segment seg-gold" style="height: 18px;"></div><span class="assignee-tag">KM</span></div>
+                    <div class="chart-bar-col"><div class="bar-segment seg-white" style="height: 26px;"></div><div class="bar-segment seg-purple" style="height: 50px;"></div><div class="bar-segment seg-gold" style="height: 18px;"></div><span class="assignee-tag">AL</span></div>
+                    <div class="chart-bar-col"><div class="bar-segment seg-white" style="height: 24px;"></div><div class="bar-segment seg-purple" style="height: 46px;"></div><div class="bar-segment seg-gold" style="height: 16px;"></div><span class="assignee-tag">BC</span></div>
+                    <div class="chart-bar-col"><div class="bar-segment seg-white" style="height: 20px;"></div><div class="bar-segment seg-purple" style="height: 38px;"></div><div class="bar-segment seg-gold" style="height: 14px;"></div><span class="assignee-tag">DK</span></div>
+                    <div class="chart-bar-col"><div class="bar-segment seg-white" style="height: 16px;"></div><div class="bar-segment seg-purple" style="height: 32px;"></div><div class="bar-segment seg-gold" style="height: 12px;"></div><span class="assignee-tag">MR</span></div>
+                    <div class="chart-bar-col"><div class="bar-segment seg-white" style="height: 14px;"></div><div class="bar-segment seg-purple" style="height: 26px;"></div><div class="bar-segment seg-gold" style="height: 10px;"></div><span class="assignee-tag">SJ</span></div>
+                    <div class="chart-bar-col"><div class="bar-segment seg-white" style="height: 12px;"></div><div class="bar-segment seg-purple" style="height: 22px;"></div><div class="bar-segment seg-gold" style="height: 8px;"></div><span class="assignee-tag">TW</span></div>
+                    <div class="chart-bar-col"><div class="bar-segment seg-white" style="height: 10px;"></div><div class="bar-segment seg-purple" style="height: 18px;"></div><div class="bar-segment seg-gold" style="height: 6px;"></div><span class="assignee-tag">CV</span></div>
+                    <div class="chart-bar-col"><div class="bar-segment seg-white" style="height: 8px;"></div><div class="bar-segment seg-purple" style="height: 14px;"></div><div class="bar-segment seg-gold" style="height: 5px;"></div><span class="assignee-tag">HF</span></div>
+                    <div class="chart-bar-col"><div class="bar-segment seg-white" style="height: 6px;"></div><div class="bar-segment seg-purple" style="height: 12px;"></div><div class="bar-segment seg-gold" style="height: 4px;"></div><span class="assignee-tag">IO</span></div>
+                    <div class="chart-bar-col"><div class="bar-segment seg-white" style="height: 4px;"></div><div class="bar-segment seg-purple" style="height: 10px;"></div><div class="bar-segment seg-gold" style="height: 4px;"></div><span class="assignee-tag">LG</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Projects Table -->
+              <div class="table-panel">
+                <div class="panel-header">Enterprise domains agents are resolving</div>
+                <div class="table-scroll-wrap">
+                  <table class="q-insights-table">
+                    <thead>
+                      <tr>
+                        <th>Domain / Service</th>
+                        <th>Claims</th>
+                        <th><span class="model-badge gemini-badge">Gemini</span></th>
+                        <th><span class="model-badge codex-badge">Codex</span></th>
+                        <th><span class="model-badge claude-badge">Claude</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><span class="proj-bullet bullet-amber"></span> payment-gateway</td>
+                        <td>24</td>
+                        <td>8</td>
+                        <td>10</td>
+                        <td>6</td>
+                      </tr>
+                      <tr>
+                        <td><span class="proj-bullet bullet-blue"></span> auth-service</td>
+                        <td>18</td>
+                        <td>6</td>
+                        <td>8</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td><span class="proj-bullet bullet-emerald"></span> billing-engine</td>
+                        <td>15</td>
+                        <td>5</td>
+                        <td>5</td>
+                        <td>5</td>
+                      </tr>
+                      <tr>
+                        <td><span class="proj-bullet bullet-cyan"></span> PR #13 Audit</td>
+                        <td>12</td>
+                        <td>4</td>
+                        <td>6</td>
+                        <td>2</td>
+                      </tr>
+                      <tr>
+                        <td><span class="proj-bullet bullet-rose"></span> ADR-002 Grounding</td>
+                        <td>9</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>2</td>
+                      </tr>
+                      <tr>
+                        <td><span class="proj-bullet bullet-purple"></span> notification-hub</td>
+                        <td>8</td>
+                        <td>2</td>
+                        <td>4</td>
+                        <td>2</td>
+                      </tr>
+                      <tr>
+                        <td><span class="proj-bullet bullet-indigo"></span> Fact Supersession</td>
+                        <td>7</td>
+                        <td>3</td>
+                        <td>2</td>
+                        <td>2</td>
+                      </tr>
+                      <tr>
+                        <td><span class="proj-bullet bullet-amber"></span> team_payments</td>
+                        <td>6</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>1</td>
+                      </tr>
+                      <tr>
+                        <td><span class="proj-bullet bullet-emerald"></span> ledger-sync</td>
+                        <td>5</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>1</td>
+                      </tr>
+                      <tr>
+                        <td><span class="proj-bullet bullet-blue"></span> user-identity-resolver</td>
+                        <td>4</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>1</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+
+          </main>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       FLOATING DOCK: FALKORDB LIVE MULTI-AGENT EXECUTION DRAWER
+       ========================================================================= -->
+  <div class="q-floating-dock">
+    <button class="dock-badge-btn" id="falkorDockBtn">
+      <span class="pulse-indicator"></span>
+      <span class="dock-label">FalkorDB Swarm Console</span>
+      <span class="dock-stat"><span id="nodeCount">69</span> Nodes &bull; <span id="edgeCount">83</span> Edges</span>
+    </button>
+  </div>
+
+  <!-- Slide-out FalkorDB Studio Drawer -->
+  <div class="falkor-drawer" id="falkorDrawer">
+    <div class="falkor-drawer-header">
+      <div class="drawer-title-group">
+        <span class="drawer-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="#10b981"/><path d="M12 3C8 8 8 16 12 21M12 3C16 8 16 16 12 21"/></svg>
+        </span>
+        <div>
+          <h3>Company Brain &bull; Swarm Runtime</h3>
+          <span class="drawer-sub" id="dbStatusText">FalkorDB: Connected &bull; ws_company_prime</span>
+        </div>
+      </div>
+      <div class="drawer-actions">
+        <button class="btn btn-secondary btn-sm" id="resetBtn" title="Reset workspace seed">Reset Seed</button>
+        <button class="drawer-close-btn" id="falkorDrawerClose">&times;</button>
+      </div>
+    </div>
+
+    <div class="falkor-drawer-body">
+      
+      <!-- Connect Real Company Context (No OAuth) -->
+      <div class="drawer-card" id="ingestCard">
+        <div class="drawer-card-header">
+          <span>Connect Real Company Context</span>
+          <span class="badge badge-accent">No OAuth Required</span>
+        </div>
+        <div class="ingest-tabs">
+          <button class="ingest-tab-btn active" id="tabGithubBtn" type="button">Public GitHub Files</button>
+          <button class="ingest-tab-btn" id="tabDocBtn" type="button">Markdown / Text File</button>
+          <button class="ingest-tab-btn" id="tabInvestigatorBtn" type="button">Contribution Investigator</button>
+        </div>
+        <div id="githubIngestSection" class="ingest-section">
+          <div class="goal-input-wrap">
+            <input type="text" id="githubRepoInput" class="q-input" placeholder="e.g. https://github.com/octocat/Hello-World or owner/repo" value="https://github.com/octocat/Hello-World">
+            <button class="btn btn-primary" id="importGithubBtn" type="button">
+              <span id="importGithubSpinner" class="spinner hidden"></span>
+              <span>Import Public Repo</span>
+            </button>
+          </div>
+          <div class="helper-text" style="font-size:11px; color:#94a3b8; margin-top:6px;">
+            Fetches accessible documentation, README, and markdown files via GitHub public API with zero authentication or OAuth.
+          </div>
+        </div>
+        <div id="docIngestSection" class="ingest-section" style="display:none;">
+          <input type="text" id="docTitleInput" class="q-input" placeholder="Document Title (e.g. Architecture RFC 102)" style="margin-bottom:8px;">
+          <textarea id="docContentInput" class="q-input" rows="4" placeholder="Paste document text, architecture decision, or markdown here..."></textarea>
+          <div style="margin-top:8px; display:flex; justify-content:flex-end;">
+            <button class="btn btn-primary" id="importDocBtn" type="button">
+              <span id="importDocSpinner" class="spinner hidden"></span>
+              <span>Import Document</span>
+            </button>
+          </div>
+        </div>
+        <div id="investigatorSection" class="ingest-section" style="display:none;">
+          <div style="font-size:12px; color:#cbd5e1; margin-bottom:8px;">Import Bounded Repository History (Commits, PRs, Issues, Reviews)</div>
+          <div class="goal-input-wrap">
+            <input type="text" id="investigatorRepoInput" class="q-input" placeholder="e.g. https://github.com/octocat/Hello-World or owner/repo" value="https://github.com/octocat/Hello-World">
+            <button class="btn btn-primary" id="importHistoryBtn" type="button">
+              <span id="importHistorySpinner" class="spinner hidden"></span>
+              <span>Import History</span>
+            </button>
+          </div>
+          <div class="helper-text" style="font-size:11px; color:#94a3b8; margin-top:6px; margin-bottom:12px;">
+            Extracts commits, PRs, issues, changed files, and reviews. Creates canonical FalkorDB entities with explicit issue resolutions only.
+          </div>
+          
+          <div id="investigatorStatusMsg" class="ingest-status-msg" style="display:none; margin-bottom:12px;"></div>
+
+          <!-- Person Contribution Read-Only Query -->
+          <div style="border-top:1px solid rgba(255,255,255,0.08); padding-top:12px; margin-top:12px;">
+            <div style="font-size:12px; font-weight:600; color:#c084fc; margin-bottom:6px;">Person Contribution Investigator</div>
+            <div class="goal-input-wrap">
+              <input type="text" id="investigatorUsernameInput" class="q-input" placeholder="Enter GitHub username (e.g. octocat)">
+              <button class="btn btn-secondary" id="lookupPersonBtn" type="button">
+                <span>Query Contributions</span>
+              </button>
+            </div>
+            <div id="personContribResultBox" style="display:none; margin-top:10px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:12px; font-size:12px;">
+            </div>
+          </div>
+        </div>
+        <div id="ingestStatusMsg" class="ingest-status-msg" style="display:none;"></div>
+      </div>
+
+      <!-- =====================================================================
+           COMPANY BRAIN: CHANGE IMPACT AND WORK EXECUTION
+           ===================================================================== -->
+      <div class="drawer-card change-room-card" id="changeRoomCard" style="border: 1px solid rgba(192, 132, 252, 0.4); background: rgba(192, 132, 252, 0.05); margin-bottom: 16px;">
+        <div class="drawer-card-header" style="border-bottom: 1px solid rgba(192, 132, 252, 0.2); padding-bottom: 8px;">
+          <div>
+            <div style="font-weight: 700; color: #f8fafc; font-size: 14px; display:flex; align-items:center; gap:8px;">
+              <span>Company Brain &bull; Change Impact &amp; Work Execution</span>
+              <span class="badge badge-accent" style="font-size:10px;">FalkorDB Swarm</span>
+            </div>
+            <div style="font-size: 11px; color: #cbd5e1; margin-top: 3px; line-height:1.4;">
+              Collaborative 6-Agent Swarm with Bounded Graph State Progression &bull; FalkorDB Port 6380
+            </div>
+            <div style="font-size:10px; color:#a855f7; display:flex; align-items:center; gap:6px; margin-top:4px;">
+              <span class="badge badge-sm badge-accent">Primary Mode: Public GitHub Repos</span>
+              <span style="color:#94a3b8;">(Seed data retained only as optional offline demo)</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <label style="font-size: 11px; font-weight: 600; color: #c084fc;">Question or Proposed Change:</label>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="currentOwnerBadge" class="badge badge-sm badge-info" style="font-size: 10px;">Owner: Asha Patel</span>
+              <button class="btn btn-secondary btn-sm" id="changeOwnerBtn" type="button" title="Toggle active service owner in FalkorDB to prove graph is operational state" style="font-size: 11px; padding: 2px 8px;">
+                <span>Toggle owner</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="goal-input-wrap">
+            <input type="text" id="changeProposalInput" class="q-input" value="Replace Redis with Valkey in the Payments service." placeholder="Enter change proposal or question...">
+            <button class="btn btn-primary" id="analyzeChangeBtn" type="button" style="white-space: nowrap;">
+              <span id="analyzeChangeSpinner" class="spinner hidden"></span>
+              <span>Run Swarm Analysis</span>
+            </button>
+          </div>
+
+          <div class="quick-chips-row" style="margin-top: 6px; flex-wrap: wrap;">
+            <button class="chip change-chip" type="button" data-change="Replace Redis with Valkey in the Payments service.">Redis &rarr; Valkey</button>
+            <button class="chip change-chip" type="button" data-change="What contribution did person Asha Patel make?">Person Contributions</button>
+            <button class="chip change-chip" type="button" data-change="Which issue did PR #42 resolve?">Resolved Issues</button>
+            <button class="chip change-chip" type="button" data-change="What files and services will this change affect?">Affected Files &amp; Scope</button>
+            <button class="chip change-chip" type="button" data-change="Who owns the affected area?">Area Ownership</button>
+            <button class="chip change-chip" type="button" data-change="Which previous decisions are related?">Related ADR Decisions</button>
+            <button class="chip change-chip" type="button" data-change="What risks or dependencies exist?">Risks &amp; Dependencies</button>
+          </div>
+        </div>
+
+        <div id="changeOwnerNotice" class="ingest-status-msg success" style="display: none; margin-top: 8px; font-size: 11px;"></div>
+
+        <!-- Change Room Results Box -->
+        <div id="changeRoomResultBox" style="display: none; margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px;">
+          
+          <!-- Final Evidence-Backed Answer Banner -->
+          <div id="finalAnswerBox" style="margin-bottom: 12px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 8px; padding: 12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-size:12px; font-weight:700; color:#60a5fa; text-transform:uppercase; letter-spacing:0.5px;">Grounded Final Answer</span>
+              <span id="questionIntentBadge" class="badge badge-accent" style="font-size:10px;">GENERAL_CHANGE_IMPACT</span>
+            </div>
+            <div id="finalAnswerText" style="font-size:12px; color:#f8fafc; line-height:1.6; font-weight:500;"></div>
+          </div>
+
+          <!-- 6-Agent Activity Timeline -->
+          <div id="agentTimelineBox" style="margin-bottom: 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(192, 132, 252, 0.2); border-radius: 8px; padding: 12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span style="font-size:11px; font-weight:700; color:#c084fc; text-transform:uppercase; letter-spacing:0.5px;">
+                Employee Agent Collaboration (Bounded FalkorDB Workflow)
+              </span>
+              <span id="workflowStateBadge" class="badge badge-success" style="font-size:10px;">COMPLETED</span>
+            </div>
+            <div id="agentTimelineSteps" style="display:flex; flex-direction:column; gap:6px;"></div>
+          </div>
+
+          <!-- Canonical Sequential Impact Path -->
+          <div style="margin-bottom: 12px;">
+            <div style="font-size: 11px; font-weight: 700; color: #a855f7; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
+              Canonical Graph Impact Path
+            </div>
+            <div id="impactPathBreadcrumbs" style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center; background: rgba(0,0,0,0.5); border: 1px solid rgba(192, 132, 252, 0.2); border-radius: 8px; padding: 10px;">
+            </div>
+          </div>
+
+          <!-- Generated GitHub Follow-Up Issue Artifact -->
+          <div id="githubIssueBox" style="margin-bottom: 12px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 8px; padding: 12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+                <span style="font-size:12px; font-weight:700; color:#f8fafc;">Generated GitHub Follow-Up Issue Artifact</span>
+              </div>
+              <button id="copyIssueMdBtn" class="btn btn-secondary btn-sm" type="button" style="font-size:10px; padding:2px 8px;">Copy Markdown</button>
+            </div>
+            <div id="githubIssueTitle" style="font-size:13px; font-weight:600; color:#38bdf8; margin-bottom:4px;"></div>
+            <div id="githubIssueMeta" style="font-size:11px; color:#94a3b8; margin-bottom:8px; display:flex; gap:8px; flex-wrap:wrap;"></div>
+            <pre id="githubIssueBody" style="background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:10px; font-size:11px; color:#cbd5e1; max-height:160px; overflow-y:auto; white-space:pre-wrap; font-family:'JetBrains Mono', monospace;"></pre>
+          </div>
+
+          <!-- Real Work Output: Follow-up Task in FalkorDB -->
+          <div style="margin-bottom: 12px; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <span style="font-size: 12px; font-weight: 700; color: #34d399;">FalkorDB Work Output &bull; Follow-Up Task Created</span>
+              <span class="badge badge-success" style="font-size: 10px;">READY FOR ASSIGNMENT</span>
+            </div>
+            <div id="followupTaskTitle" style="font-size: 13px; font-weight: 600; color: #f8fafc; margin-bottom: 4px;"></div>
+            <div id="followupTaskMeta" style="font-size: 11px; color: #94a3b8; display: flex; gap: 12px; flex-wrap: wrap;"></div>
+          </div>
+
+          <!-- Impact Summary & Required Reviewers -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+            <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 8px;">
+              <div style="font-size: 11px; font-weight: 600; color: #cbd5e1; margin-bottom: 4px;">Affected Scope &amp; Files</div>
+              <div id="affectedEntitiesList" style="font-size: 11px; color: #94a3b8;"></div>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 8px;">
+              <div style="font-size: 11px; font-weight: 600; color: #cbd5e1; margin-bottom: 4px;">Required Reviewers &amp; Governing Decision</div>
+              <div id="requiredReviewersList" style="font-size: 11px; color: #94a3b8;"></div>
+            </div>
+          </div>
+
+          <!-- FalkorDB Agent Message Bus Feed -->
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 11px; font-weight: 700; color: #60a5fa; text-transform: uppercase; letter-spacing: 0.5px;">
+                FalkorDB Agent Message Bus (Durable Graph Records)
+              </span>
+              <span id="messageCountBadge" class="badge badge-info" style="font-size: 10px;">6 Messages</span>
+            </div>
+            <div id="agentMessagesFeed" style="display: flex; flex-direction: column; gap: 6px; max-height: 220px; overflow-y: auto;">
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Verified Provenance & Citations Drawer -->
-      <div class="card glass-card citations-card">
-        <div class="card-header">
-          <div class="card-title">
-            <span class="card-icon">🔍</span>
-            <h2>Verified Evidence Citations</h2>
+      <!-- Ask General Questions from Graph (Evidence-Grounded Retrieval) -->
+      <div class="drawer-card" id="askCard">
+        <div class="drawer-card-header">
+          <span>Ask Graph Knowledge (General Questions)</span>
+          <span class="badge badge-info">Evidence Grounded</span>
+        </div>
+        <div class="goal-input-wrap">
+          <input type="text" id="askInput" class="q-input" placeholder="Ask any question across imported company sources...">
+          <button class="btn btn-primary" id="askBtn" type="button">
+            <span id="askSpinner" class="spinner hidden"></span>
+            <span>Ask Graph</span>
+          </button>
+        </div>
+        <div class="quick-chips-row">
+          <button class="chip ask-chip" type="button" data-q="What is the purpose of this project?">Project Purpose</button>
+          <button class="chip ask-chip" type="button" data-q="What are the main architectural decisions?">Architectural Decisions</button>
+          <button class="chip ask-chip" type="button" data-q="Who is the current owner of the project?">Project Ownership</button>
+          <button class="chip ask-chip" type="button" data-q="What is the quantum encryption protocol?">Test Abstention</button>
+        </div>
+        <div id="askResultBox" class="ask-result-box" style="display:none;">
+          <div class="ask-verdict-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span id="askVerdictBadge" class="badge badge-success">DOCUMENTED</span>
+            <span id="askReasoningMode" style="font-size:11px; color:#94a3b8;"></span>
           </div>
+          <div id="askAnswerText" class="ask-answer-text" style="font-size:12px; color:#e2e8f0; line-height:1.5; white-space:pre-wrap; background:rgba(0,0,0,0.3); padding:10px; border-radius:6px; margin-bottom:8px;"></div>
+          <div id="askCheckedSources" class="ask-checked-sources" style="font-size:11px; color:#64748b;"></div>
+        </div>
+      </div>
+
+      <!-- Run Goal Box -->
+      <div class="drawer-card">
+        <div class="drawer-card-header">
+          <span>Autonomous Goal Execution</span>
+          <span class="badge badge-accent">Dynamic Routing</span>
+        </div>
+        <div class="goal-input-wrap">
+          <input type="text" id="goalInput" class="q-input" value="Prepare Payments API for the next release. Find the current owner, explain the unresolved risk and the decision behind it, then coordinate the next investigation." placeholder="Describe enterprise goal...">
+          <button class="btn btn-primary" id="submitGoalBtn">
+            <span id="btnSpinner" class="spinner hidden"></span>
+            <span id="btnText">Execute Plan</span>
+          </button>
+          <button class="btn btn-secondary" id="runStarterGoalBtn" style="display:none;"></button>
+        </div>
+        <div class="quick-chips-row">
+          <button class="chip" data-query="MATCH (e:Employee) RETURN e.name, e.role">All Employees</button>
+          <button class="chip" data-query="MATCH (s:Service)-[r:OWNED_BY]->(t:Team) RETURN s.name, t.name">Service Owners</button>
+          <button class="chip" data-query="MATCH (f:Fact) WHERE f.status = 'ACTIVE' RETURN f.name, f.valid_from">Active Facts</button>
+        </div>
+      </div>
+
+      <!-- Turn by Turn Timeline -->
+      <div class="drawer-card">
+        <div class="drawer-card-header">
+          <span>Sequential Turn Execution Log</span>
+          <span class="badge badge-success">Grounded Claims</span>
+        </div>
+        <div id="timelineContainer" class="execution-timeline">
+          <div class="empty-timeline">Run a goal to observe dynamic employee collaboration across the company graph.</div>
+        </div>
+      </div>
+
+      <!-- Deliverable Card -->
+      <div class="drawer-card" id="deliverableCard" style="display:none;">
+        <div class="drawer-card-header">
+          <span>Persisted Deliverable</span>
+          <span class="badge badge-warning" id="deliverableBadge">Completed with conditions</span>
+        </div>
+        <div id="deliverableContent" class="deliverable-body"></div>
+      </div>
+
+      <!-- 3D Graph Canvas -->
+      <div class="drawer-card">
+        <div class="drawer-card-header">
+          <span>3D FalkorDB Knowledge Topology</span>
+          <div class="vp-tools">
+            <button class="btn-tool" id="zoomInBtn" title="Zoom In">+</button>
+            <button class="btn-tool" id="zoomOutBtn" title="Zoom Out">&minus;</button>
+            <button class="btn-tool" id="fitCamBtn" title="Fit to Graph">&boxbox;</button>
+            <button class="btn-tool" id="rotateToggleBtn" title="Auto-Rotate">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            </button>
+            <button class="btn-tool" id="resetCamBtn" title="Reset View">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+            <button class="btn-tool" id="expand3dBtn" title="Expand 3D Knowledge Studio" style="color:#c084fc; font-weight:bold;">&target;</button>
+          </div>
+        </div>
+        <div id="brain3dContainer" class="brain3d-canvas-wrap"></div>
+      </div>
+
+      <!-- Citations & History -->
+      <div class="drawer-card">
+        <div class="drawer-card-header">
+          <span>Ground-Truth Citations</span>
           <span class="badge badge-info" id="citationCountBadge">0 Citations</span>
         </div>
-        <div class="card-body">
-          <div id="citationsContainer" class="citations-list">
-            <div class="empty-citations">
-              <p>Claims generated by employee agents will automatically resolve to stored FalkorDB <code>Source</code> and <code>Evidence</code> locators here.</p>
-            </div>
-          </div>
-        </div>
+        <div id="citationsContainer" class="citations-scroll"></div>
       </div>
 
-      <!-- Fact Supersession & Audit History -->
-      <div class="card glass-card history-card">
-        <div class="card-header">
-          <div class="card-title">
-            <span class="card-icon">⏱️</span>
-            <h2>Fact Temporal Validity & History</h2>
-          </div>
-          <span class="badge badge-warning">Audit Trail</span>
+      <div class="drawer-card">
+        <div class="drawer-card-header">
+          <span>Temporal Validity &amp; Supersession Audit</span>
         </div>
-        <div class="card-body">
-          <div id="historyContainer" class="history-list">
-            <!-- Dynamic history items -->
-          </div>
-        </div>
+        <div id="historyContainer" class="history-scroll"></div>
       </div>
 
-    </section>
-  </main>
+      <!-- Action Verification Buttons -->
+      <div class="drawer-actions-row">
+        <button class="btn btn-secondary btn-sm" id="supersedeBtn">Verify Fact Supersession</button>
+        <button class="btn btn-secondary btn-sm" id="recallMemoryBtn">Verify Fresh Recall</button>
+        <button class="btn btn-secondary btn-sm" id="generalityBtn">Verify Multimodal Generality</button>
+      </div>
+
+    </div>
+  </div>
 
   <!-- Modal for Query Results / Inspections -->
   <div class="modal-backdrop" id="modalBackdrop">
@@ -218,6 +1124,97 @@
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <!-- Dedicated 3D Knowledge Topology Studio Modal -->
+  <div class="topology-modal-backdrop" id="topologyModalBackdrop">
+    <div class="topology-modal-window">
+      <div class="topology-modal-header">
+        <div class="topology-title-group">
+          <div class="topology-live-dot"></div>
+          <div>
+            <h3 class="topology-modal-heading">FalkorDB 3D Knowledge Topology</h3>
+            <span class="topology-sub">Interactive spatial graph grounded in real company entities &amp; evidence</span>
+          </div>
+        </div>
+        <div class="topology-header-pills">
+          <span class="topo-pill" id="topoNodeCountPill">0 Nodes</span>
+          <span class="topo-pill" id="topoEdgeCountPill">0 Edges</span>
+          <span class="topo-pill topo-pill-accent">FalkorDB ws_company_prime</span>
+        </div>
+        <button class="topology-close-btn" id="topologyModalCloseBtn" title="Close 3D Topology">&times;</button>
+      </div>
+      
+      <div class="topology-modal-toolbar">
+        <div class="topology-filter-group">
+          <button class="topo-filter-btn active" data-filter="all">All Entities</button>
+          <button class="topo-filter-btn" data-filter="employees">Employees &amp; Teams</button>
+          <button class="topo-filter-btn" data-filter="projects">Projects &amp; Services</button>
+          <button class="topo-filter-btn" data-filter="decisions">Decisions &amp; Tasks</button>
+          <button class="topo-filter-btn" data-filter="evidence">Evidence &amp; Sources</button>
+        </div>
+        <div class="topology-tools-group">
+          <button class="btn-tool" id="topoZoomInBtn" title="Zoom In">+</button>
+          <button class="btn-tool" id="topoZoomOutBtn" title="Zoom Out">&minus;</button>
+          <button class="btn-tool" id="topoFitBtn" title="Fit to Graph">&boxbox;</button>
+          <button class="btn-tool" id="topoRotateBtn" title="Toggle Auto-Rotate">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          </button>
+          <button class="btn-tool" id="topoResetBtn" title="Reset View">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      
+      <div class="topology-modal-body">
+        <div id="fullBrain3dContainer" class="full-brain3d-canvas-wrap"></div>
+        <div id="topologyNodeDetailPanel" class="topology-node-panel" style="display:none;">
+          <div class="panel-header">
+            <span class="panel-badge" id="panelNodeBadge">Entity</span>
+            <button class="panel-close-btn" id="panelCloseBtn">&times;</button>
+          </div>
+          <h4 id="panelNodeTitle">Entity Title</h4>
+          <div class="panel-id" id="panelNodeId">id: node_123</div>
+          <div class="panel-desc" id="panelNodeDesc">Description</div>
+          <div class="panel-props" id="panelNodeProps"></div>
+          <div class="panel-actions">
+            <button class="btn btn-secondary btn-sm" id="panelFocusBtn">Center Node</button>
+            <button class="btn btn-primary btn-sm" id="panelInspectFalkorBtn">Inspect in Swarm</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="topology-modal-footer">
+        <div class="topology-legend">
+          <span class="legend-chip"><span class="legend-dot" style="background:#4338ca;"></span> Employee</span>
+          <span class="legend-chip"><span class="legend-dot" style="background:#0284c7;"></span> Project</span>
+          <span class="legend-chip"><span class="legend-dot" style="background:#0891b2;"></span> Service</span>
+          <span class="legend-chip"><span class="legend-dot" style="background:#c026d3;"></span> Decision</span>
+          <span class="legend-chip"><span class="legend-dot" style="background:#059669;"></span> Fact</span>
+          <span class="legend-chip"><span class="legend-dot" style="background:#e11d48;"></span> Evidence</span>
+          <span class="legend-chip"><span class="legend-dot" style="background:#d97706;"></span> Source</span>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-primary" id="topoLaunchSwarmBtn">Launch Swarm &gt;&gt;</button>
+          <button class="btn btn-secondary" id="topoCloseFooterBtn">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden compatibility elements to ensure full compatibility with app.js -->
+  <div style="display:none;">
+    <span id="dbStatusBadge"></span>
+    <span id="wsLabel">ws_company_prime</span>
+    <span id="themeToggleBtn"></span>
+    <span id="themeIcon"></span>
+    <span id="themeLabel"></span>
+    <svg id="graphSvg"></svg>
+    <div id="graphOverlayInfo"></div>
+    <div id="agentCard-chief" data-agent="emp_chief_of_staff"><span id="state-chief"></span></div>
+    <div id="agentCard-eng-mgr" data-agent="emp_eng_manager"><span id="state-eng-mgr"></span></div>
+    <div id="agentCard-engineer" data-agent="emp_engineer"><span id="state-engineer"></span></div>
+    <div id="agentCard-knowledge-mgr" data-agent="emp_knowledge_mgr"><span id="state-knowledge-mgr"></span></div>
+  </div>
+
+  <script src="app.js?v=4.3"></script>
 </body>
 </html>

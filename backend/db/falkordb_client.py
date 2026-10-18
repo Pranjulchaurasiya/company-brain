@@ -68,7 +68,8 @@ class FalkorDBClient:
         labels = [
             "Employee", "Team", "Skill", "Goal", "Project", "Service", "Task",
             "Document", "Ticket", "ChatMessage", "Decision", "Fact", "Source",
-            "Evidence", "AgentMessage", "Session", "Memory", "Deliverable"
+            "Evidence", "AgentMessage", "Session", "Memory", "Deliverable",
+            "Repository", "Person", "Commit", "PullRequest", "Issue", "File"
         ]
         for label in labels:
             try:
@@ -79,6 +80,10 @@ class FalkorDBClient:
                 g.query(f"CREATE INDEX FOR (n:{label}) ON (n.workspace_id)")
             except Exception as e:
                 logger.debug(f"Index creation note for {label}.workspace_id: {e}")
+        try:
+            g.query("CREATE INDEX FOR (p:Person) ON (p.login)")
+        except Exception as e:
+            logger.debug(f"Index creation note for Person.login: {e}")
 
     def query(self, cypher: str, params: Optional[Dict[str, Any]] = None) -> List[List[Any]]:
         g = self.get_graph()

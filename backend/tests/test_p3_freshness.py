@@ -67,9 +67,51 @@ def test_cross_session_memory_recall():
     assert workflow_memory is not None
     assert "PAY-104" in workflow_memory["content"]
     assert workflow_memory["project"]["id"] == "proj_payments_v2"
+    
+    # 3. Provenance assertions: originating task, evidence citations, and source
     assert workflow_memory["originating_task"] is not None
+    assert workflow_memory["originating_task"]["id"] is not None
+    assert len(workflow_memory["originating_task"]["title"]) > 0
 
-    print("\n[PASS] Cross-session memory recall verified: Follow-up question retrieves prior findings and tasks without conversational history.")
+    assert workflow_memory["evidence"] is not None
+    assert workflow_memory["evidence"]["id"] is not None
+    assert len(workflow_memory["evidence"]["excerpt"]) > 0
+
+    assert workflow_memory["source"] is not None
+    assert workflow_memory["source"]["title"] is not None
+    assert len(workflow_memory["source"]["uri"]) > 0
+
+    # Ensure evidence citations list contains valid evidence records
+    citations = workflow_memory.get("evidence_citations", [])
+    assert len(citations) >= 1
+    for cit in citations:
+        assert cit["evidence_id"] is not None
+        assert cit["excerpt"] is not None
+        assert cit["source_title"] is not None
+        assert cit["source_uri"] is not None
+
+    # Invariant: A memory with null evidence cannot satisfy provenance
+    def validate_provenance(mem):
+        if not mem:
+            return False
+        if not mem.get("originating_task") or not mem["originating_task"].get("id"):
+            return False
+        if not mem.get("evidence") or not mem["evidence"].get("id") or not mem["evidence"].get("excerpt"):
+            return False
+        if not mem.get("source") or not mem["source"].get("title"):
+            return False
+        return True
+
+    assert validate_provenance(workflow_memory) is True
+    # Negative assertion: null evidence fails provenance check
+    fake_mem = {
+        "originating_task": {"id": "task_1", "title": "Test"},
+        "evidence": None,
+        "source": None
+    }
+    assert validate_provenance(fake_mem) is False
+
+    print("\n[PASS] Cross-session memory recall verified with complete provenance: originating task, evidence excerpts, and source metadata.")
 
 if __name__ == "__main__":
     pytest.main(["-s", __file__])

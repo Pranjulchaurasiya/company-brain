@@ -24,6 +24,13 @@ Represent the chat and issue tracker sources with familiar Slack/GitHub-style re
 10. **Review readiness:** a fresh browser session opens the seeded workspace; the main workflow starts without registration, OAuth, or manual data setup.
 11. **Honest integrations:** simulated connector reads/writes are labeled as simulated and are never presented as changes to real Slack or GitHub accounts.
 12. **Cross-session memory:** finish a workflow, start a new session with no prior chat history, ask a related follow-up, and retrieve the earlier finding/decision/task from FalkorDB with its original source citation.
+13. **Public GitHub Ingestion (Recursive Trees):** 
+    - *Automated Mocked Suite (`backend/tests/test_github_ingest.py`):* Fully verifies recursive Git tree parsing (`/git/trees/{ref}?recursive=1`), nested directory paths, `#Lstart-Lend` line locator generation, stable idempotent re-import without duplicate nodes, binary/oversized file exclusion, partial failure reporting (`INGESTION_PARTIAL`), and API rate limit resilience.
+    - *Manual Live Verification:* Verified live ingestion of `https://github.com/octocat/Hello-World` without authentication, extracting source file `README` and evidence excerpt `README#L1-L1` into FalkorDB, and successfully querying it via `/api/ask`. Live imports remain subject to GitHub unauthenticated IP rate limits (60 requests/hr).
+14. **Unseen Grounded Q&A:** Answering unseen, non-Payments questions using strictly retrieved FalkorDB evidence with citations resolving to stored locators.
+15. **Strict Honest Abstention:** If the graph has insufficient evidence, system responds with "Not documented" and enumerates checked indices; never returns a canned Payments answer.
+16. **Dynamic Employee Routing:** Employee selection varies with request context and graph skills (e.g. routing infra tasks to David Kim instead of a fixed 4-agent sequence).
+17. **In-App Remediation & Accurate Verdict Badges:** When a release verdict is blocked, the deliverable badge displays "Completed with conditions" and creates a real in-app remediation task in FalkorDB, clearly distinguishing completed work from proposed external writes.
 
 ## Quality measures
 

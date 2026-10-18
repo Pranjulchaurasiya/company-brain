@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company Brain — Stitch UI Design Showcase (Top 5 Screens)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c1017;
+      --card-bg: rgba(18, 24, 38, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-blue: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-crimson: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    header {
+      background: rgba(12, 16, 23, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #60a5fa;
+    }
+    .back-btn {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--card-border);
+      background: rgba(255, 255, 255, 0.04);
+      transition: all 0.2s ease;
+    }
+    .back-btn:hover {
+      color: var(--text-main);
+      border-color: var(--accent-blue);
+      background: rgba(59, 130, 246, 0.1);
+    }
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 24px 32px 64px 32px;
+      flex: 1;
+      width: 100%;
+    }
+    .tabs-nav {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--text-main);
+    }
+    .tab-btn.active {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: var(--accent-blue);
+      color: #93c5fd;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.25);
+    }
+    .tab-btn .num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+    .tab-btn.active .num {
+      background: var(--accent-blue);
+      color: #fff;
+    }
+    .screen-panel {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .screen-panel.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .meta-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+    }
+    .meta-info h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .meta-info p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 900px;
+    }
+    .meta-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+    }
+    .image-viewer {
+      background: #080b10;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+    .image-viewer-toolbar {
+      background: rgba(18, 24, 38, 0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .image-viewer-toolbar span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .zoom-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .zoom-btn:hover {
+      background: var(--accent-blue);
+    }
+    .image-container {
+      max-height: 85vh;
+      overflow-y: auto;
+      text-align: center;
+      background: #05070a;
+      padding: 16px;
+    }
+    .image-container img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+      display: block;
+      margin: 0 auto;
+    }
+    .filmstrip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .filmstrip-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .filmstrip-card:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+    .filmstrip-card.active {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+    }
+    .filmstrip-thumb {
+      height: 120px;
+      overflow: hidden;
+      background: #05070a;
+    }
+    .filmstrip-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      opacity: 0.85;
+      transition: opacity 0.2s ease;
+    }
+    .filmstrip-card:hover .filmstrip-thumb img,
+    .filmstrip-card.active .filmstrip-thumb img {
+      opacity: 1;
+    }
+    .filmstrip-label {
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #cbd5e1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+      </svg>
+      <h1>Company Brain — Autonomous AI Design Showcase</h1>
+      <span class="badge" style="background: rgba(168, 85, 247, 0.2); border-color: rgba(168, 85, 247, 0.4); color: #c084fc;">PRIMARY: QRONOS AI AGENT SCHEDULER (21ST.DEV)</span>
+    </div>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <a href="https://qronos-ai-agent-scheduler-template-v1.21st.app/" target="_blank" class="back-btn" style="border-color: rgba(168, 85, 247, 0.5); color: #d8b4fe; background: rgba(168, 85, 247, 0.12);">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        Qronos Agent Template (21st.dev) ↗
+      </a>
+      <a href="https://canva.link/cyaqumm76a4jplp" target="_blank" class="back-btn" style="border-color: rgba(6, 182, 212, 0.4); color: #67e8f9; background: rgba(6, 182, 212, 0.08);">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
+        </svg>
+        Open Canva Deck (10 Slides) ↗
+      </a>
+      <a href="/" class="back-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Return to Live Application
+      </a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="showScreen(1)" style="border-color: rgba(168, 85, 247, 0.6); color: #d8b4fe; background: rgba(168, 85, 247, 0.15);">
+        <span class="num" style="background: #a855f7; color: #fff;">1</span>
+        <span>Qronos AI Agent Scheduler (Active)</span>
+      </button>
+      <button class="tab-btn" onclick="showScreen(2)">
+        <span class="num">2</span>
+        <span>FalkorDB Topology & Cypher Studio</span>
+      </button>
+      <button class="tab-btn" onclick="showScreen(3)">
+        <span class="num">3</span>
+        <span>Evidence Citation & Provenance Workspace</span>
+      </button>
+      <button class="tab-btn" onclick="showScreen(4)">
+        <span class="num">4</span>
+        <span>Deliverable Review & RFC Sign-Off</span>
+      </button>
+      <button class="tab-btn" onclick="showScreen(5)">
+        <span class="num">5</span>
+        <span>Fact Freshness & Supersession Audit</span>
+      </button>
+      <button class="tab-btn" onclick="showScreen(6)" style="border-color: rgba(0, 242, 254, 0.4); color: #67e8f9;">
+        <span class="num" style="background: rgba(0, 242, 254, 0.2); color: #00f2fe;">6</span>
+        <span>Tactical Cyber Graph HUD</span>
+      </button>
+      <button class="tab-btn" onclick="showScreen(7)" style="border-color: rgba(255, 85, 0, 0.4); color: #fdba74;">
+        <span class="num" style="background: rgba(255, 85, 0, 0.2); color: #ff5500;">7</span>
+        <span>Swiss Neo-Brutalist Engineering</span>
+      </button>
+      <button class="tab-btn" onclick="showScreen(8)" style="border-color: rgba(168, 85, 247, 0.4); color: #d8b4fe;">
+        <span class="num" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;">8</span>
+        <span>Spatial Obsidian Console</span>
+      </button>
+      <button class="tab-btn" onclick="showScreen(9)">
+        <span class="num">9</span>
+        <span>Aetheris Swarm (Stitch Concept)</span>
+      </button>
+    </div>
+
+    <!-- Screen 1: Qronos AI Agent Scheduler (21st.dev) -->
+    <div id="screen-1" class="screen-panel active">
+      <div class="meta-card" style="border-color: rgba(168, 85, 247, 0.3); background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(18, 24, 38, 0.85));">
+        <div class="meta-info">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <span style="font-size: 11px; font-weight: 700; font-family: 'JetBrains Mono', monospace; background: #a855f7; color: #fff; padding: 2px 8px; border-radius: 4px;">ACTIVE PRODUCTION ARCHITECTURE</span>
+            <span style="font-size: 12px; color: #a5b4fc; font-family: 'JetBrains Mono', monospace;">Template: Qronos AI Agent Scheduler (21st.dev)</span>
+          </div>
+          <h2>1. Qronos AI Agent Job Scheduler & Stateful Autonomous Swarm Runtime</h2>
+          <p>
+            The official schedule management system and stateful runtime for autonomous agents from 21st.dev. Preserves durable graph memory, agent toolkits, and context across recurring governed runs. Drives Company Brain's sequential delegation protocol across Chief of Staff, Engineering Manager, Staff Engineer, and Knowledge Manager.
+          </p>
+          <div class="meta-tags">
+            <span class="tag" style="color: #c084fc; border-color: rgba(168, 85, 247, 0.4);">Template: Qronos AI (21st.dev)</span>
+            <span class="tag">Runtime: Stateful Execution Engine</span>
+            <span class="tag">Triggers: Event-Driven + Adaptive Cron</span>
+            <span class="tag" style="color: #34d399; border-color: rgba(16, 185, 129, 0.4);">State: Canonical FalkorDB Memory</span>
+            <span class="tag">Views: Inbox &bull; My Agents &bull; Run History &bull; Pulse</span>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <a href="/qronos_assets/about_schedule.png" target="_blank" class="zoom-btn" style="background: rgba(168, 85, 247, 0.2); border-color: rgba(168, 85, 247, 0.4); color: #d8b4fe;">
+            Open Scheduler High-Res ↗
+          </a>
+          <a href="https://qronos-ai-agent-scheduler-template-v1.21st.app/" target="_blank" class="zoom-btn" style="background: rgba(255, 255, 255, 0.08);">
+            Live 21st.dev Template ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Dual Preview Showcase: Scheduler Table & Tracking Dashboard -->
+      <div style="display: grid; grid-template-columns: 1fr; gap: 24px;">
+        <div class="image-viewer">
+          <div class="image-viewer-toolbar">
+            <span>PREVIEW 1: Qronos Stateful Agent Schedule Table & Triggers</span>
+            <span>Agent Roster &bull; Trigger Rules &bull; Memory Checkpoints</span>
+          </div>
+          <div class="image-container">
+            <img src="/qronos_assets/about_schedule.png" alt="Qronos Agent Scheduler Table">
+          </div>
+        </div>
+
+        <div class="image-viewer">
+          <div class="image-viewer-toolbar">
+            <span>PREVIEW 2: Qronos Real-Time Agent Telemetry, Activity Pulse & Runtime Metrics</span>
+            <span>Latency &bull; Token Velocity &bull; Throughput &bull; Verification Rate</span>
+          </div>
+          <div class="image-container">
+            <img src="/qronos_assets/tracking_dashboard.png" alt="Qronos Tracking Dashboard">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 2 -->
+    <div id="screen-2" class="screen-panel">
+      <div class="meta-card">
+        <div class="meta-info">
+          <h2>2. FalkorDB Interactive Knowledge Graph Topology & Cypher Studio</h2>
+          <p>
+            High-density split workbench featuring an interactive force-directed graph canvas representing 18 schema labels with directional relationship vectors, alongside a syntactically highlighted Cypher Query Editor and deep GraphBLAS centrality metrics dock (PageRank, Betweenness, Closeness).
+          </p>
+          <div class="meta-tags">
+            <span class="tag">Screen ID: 763319284c744eb9bdc7b600c54b2020</span>
+            <span class="tag">Theme: Executive Autonomous Orchestration</span>
+            <span class="tag">Dimensions: 2560 × 2048</span>
+            <span class="tag" style="color: #22d3ee; border-color: rgba(6, 182, 212, 0.4);">Core: Interactive Topology & Cypher Editor</span>
+          </div>
+        </div>
+        <a href="/stitch_assets/stitch_screen2_topology_cypher.png" target="_blank" class="zoom-btn">
+          Open Full-Res (2560px) ↗
+        </a>
+      </div>
+      <div class="image-viewer">
+        <div class="image-viewer-toolbar">
+          <span>PREVIEW: Interactive FalkorDB Graph Topology Canvas & Query Studio</span>
+          <span>Scroll to inspect complete layout ↓</span>
+        </div>
+        <div class="image-container">
+          <img src="/stitch_assets/stitch_screen2_topology_cypher.png" alt="FalkorDB Interactive Knowledge Graph Topology & Cypher Studio">
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 3 -->
+    <div id="screen-3" class="screen-panel">
+      <div class="meta-card">
+        <div class="meta-info">
+          <h2>3. Evidence Citation Inspector & Cross-Source Provenance Workspace</h2>
+          <p>
+            Dual-pane forensic audit workspace connecting agent assertions to ground-truth sources. Left pane features confidence scoring meters and citation pills [ev_pr204, ev_slack_p01, ev_adr003]. Right pane renders syntax-highlighted GitHub PR diffs, Slack thread context, and Notion architecture briefs.
+          </p>
+          <div class="meta-tags">
+            <span class="tag">Screen ID: b6d8e56d5ed849f9a60e678e159737da</span>
+            <span class="tag">Theme: Executive Autonomous Orchestration</span>
+            <span class="tag">Dimensions: 2560 × 2048</span>
+            <span class="tag" style="color: #34d399; border-color: rgba(16, 185, 129, 0.4);">Core: Ground-Truth Evidence & PR Diffs</span>
+          </div>
+        </div>
+        <a href="/stitch_assets/stitch_screen3_evidence_provenance.png" target="_blank" class="zoom-btn">
+          Open Full-Res (2560px) ↗
+        </a>
+      </div>
+      <div class="image-viewer">
+        <div class="image-viewer-toolbar">
+          <span>PREVIEW: Multi-Source Evidence Deep Viewer & Claims Dossier</span>
+          <span>Scroll to inspect complete layout ↓</span>
+        </div>
+        <div class="image-container">
+          <img src="/stitch_assets/stitch_screen3_evidence_provenance.png" alt="Evidence Citation Inspector & Cross-Source Provenance Workspace">
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 4 -->
+    <div id="screen-4" class="screen-panel">
+      <div class="meta-card">
+        <div class="meta-info">
+          <h2>4. Deliverable Review & Cryptographic Sign-Off Briefing (RFC-4029)</h2>
+          <p>
+            Executive deliverable dossier presenting synthesized release-readiness assessments, quantitative risk assessment matrix (Critical/High/Med/Low), deterministic rollback verification stages, and multi-agent Ed25519 cryptographic quorum with hardware enclave human authorization.
+          </p>
+          <div class="meta-tags">
+            <span class="tag">Screen ID: 3dfb0efe44ba419281b1425d7ab47c05</span>
+            <span class="tag">Theme: Executive Autonomous Orchestration</span>
+            <span class="tag">Dimensions: 2560 × 4248</span>
+            <span class="tag" style="color: #818cf8; border-color: rgba(129, 140, 248, 0.4);">Core: Release Dossier & Quorum Sign-Off</span>
+          </div>
+        </div>
+        <a href="/stitch_assets/stitch_screen4_deliverable_signoff.png" target="_blank" class="zoom-btn">
+          Open Full-Res (2560px) ↗
+        </a>
+      </div>
+      <div class="image-viewer">
+        <div class="image-viewer-toolbar">
+          <span>PREVIEW: RFC-4029 Executive Deliverable Dossier & Multi-Agent Signatory Dock</span>
+          <span>Scroll to inspect complete layout ↓</span>
+        </div>
+        <div class="image-container">
+          <img src="/stitch_assets/stitch_screen4_deliverable_signoff.png" alt="Deliverable Review & Cryptographic Sign-Off Briefing">
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 5 -->
+    <div id="screen-5" class="screen-panel">
+      <div class="meta-card">
+        <div class="meta-info">
+          <h2>5. Temporal Fact Freshness, Supersession & Knowledge Graph Drift Audit</h2>
+          <p>
+            Bi-temporal governance console featuring an interactive historical state timeline scrubber, a strikethrough fact supersession matrix (e.g. Alex Rivera superseded by Priya Sharma), and a real-time contradiction detector highlighting discrepancies between Slack chatter and official ADR records.
+          </p>
+          <div class="meta-tags">
+            <span class="tag">Screen ID: a44b2cd6b2f74e8fab8dedadeb7dae52</span>
+            <span class="tag">Theme: Executive Autonomous Orchestration</span>
+            <span class="tag">Dimensions: 2560 × 3112</span>
+            <span class="tag" style="color: #f87171; border-color: rgba(239, 68, 68, 0.4);">Core: Bi-Temporal Supersession & Drift Detection</span>
+          </div>
+        </div>
+        <a href="/stitch_assets/stitch_screen5_fact_freshness.png" target="_blank" class="zoom-btn">
+          Open Full-Res (2560px) ↗
+        </a>
+      </div>
+      <div class="image-viewer">
+        <div class="image-viewer-toolbar">
+          <span>PREVIEW: Fact Freshness Timeline, Strikethrough Supersession & Drift Detector</span>
+          <span>Scroll to inspect complete layout ↓</span>
+        </div>
+        <div class="image-container">
+          <img src="/stitch_assets/stitch_screen5_fact_freshness.png" alt="Temporal Fact Freshness, Supersession & Knowledge Graph Drift Audit">
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 6: Tactical Cyber Graph HUD -->
+    <div id="screen-6" class="screen-panel">
+      <div class="meta-card">
+        <div class="meta-info">
+          <h2>6. Tactical Cyber-Spatial Graph Command (Palantir Gotham × Linear)</h2>
+          <p>
+            High-density tactical operations center built for real-time autonomous swarm command. Deep OLED black backplane (#05070a), micro-dot matrix coordinate grid, luminous Phosphor Cyan (#00f2fe) and Nuclear Emerald (#00ff87) telemetry pulses, central force-directed 2D graph with dynamic centrality clustering, and live code diffs.
+          </p>
+          <div class="meta-tags">
+            <span class="tag">Archetype: Tactical Cybernetic HUD</span>
+            <span class="tag">Inspiration: Palantir Gotham / Linear / Raycast</span>
+            <span class="tag">Theme: High-Density Swarm Operations</span>
+            <span class="tag" style="color: #00f2fe; border-color: rgba(0, 242, 254, 0.4);">Neon Accents: #00f2fe & #00ff87</span>
+          </div>
+        </div>
+        <a href="/stitch_assets/tactical_graph_hud_1792217957243.jpg" target="_blank" class="zoom-btn">
+          Open Full-Res Mockup ↗
+        </a>
+      </div>
+      <div class="image-viewer">
+        <div class="image-viewer-toolbar">
+          <span>PREVIEW: Tactical Cyber-Spatial Multi-Agent Graph Command Center</span>
+          <span>Scroll to inspect complete layout ↓</span>
+        </div>
+        <div class="image-container">
+          <img src="/stitch_assets/tactical_graph_hud_1792217957243.jpg" alt="Tactical Cyber-Spatial Graph Command">
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 7: Swiss Neo-Brutalist Engineering -->
+    <div id="screen-7" class="screen-panel">
+      <div class="meta-card">
+        <div class="meta-info">
+          <h2>7. Swiss High-Precision Neo-Brutalist Engineering (Teenage Engineering × Ink & Switch)</h2>
+          <p>
+            Stark, industrial, tactile engineering console designed to eliminate AI slop. Deep charcoal canvas (#0d0f12), razor-sharp 1px grid border dividers, monospaced tabular state machines, live Cypher query terminal, and vibrant industrial Safety Orange (#ff5500) hazard highlights.
+          </p>
+          <div class="meta-tags">
+            <span class="tag">Archetype: Swiss Industrial Neo-Brutalism</span>
+            <span class="tag">Inspiration: Teenage Engineering / Ink & Switch / Vercel Geist</span>
+            <span class="tag">Theme: Zero-Gimmick Engineering Authority</span>
+            <span class="tag" style="color: #ff5500; border-color: rgba(255, 85, 0, 0.4);">Safety Accent: #ff5500</span>
+          </div>
+        </div>
+        <a href="/stitch_assets/swiss_brutalist_ui_1792217982536.jpg" target="_blank" class="zoom-btn">
+          Open Full-Res Mockup ↗
+        </a>
+      </div>
+      <div class="image-viewer">
+        <div class="image-viewer-toolbar">
+          <span>PREVIEW: Swiss Neo-Brutalist Industrial Multi-Agent Engineering Terminal</span>
+          <span>Scroll to inspect complete layout ↓</span>
+        </div>
+        <div class="image-container">
+          <img src="/stitch_assets/swiss_brutalist_ui_1792217982536.jpg" alt="Swiss Neo-Brutalist Engineering Terminal">
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 8: Spatial Obsidian Console -->
+    <div id="screen-8" class="screen-panel">
+      <div class="meta-card">
+        <div class="meta-info">
+          <h2>8. Spatial Glassmorphic Obsidian Console (Apple VisionOS × Perplexity Pro)</h2>
+          <p>
+            Volumetric, luminous, deep obsidian glass (#0b0e14). Multi-layered frosted glass panels with 30px backdrop blur, subtle violet-blue rim light reflections, volumetric floating knowledge graph organism, and cryptographic deliverable drawer with verifiable medallion seals.
+          </p>
+          <div class="meta-tags">
+            <span class="tag">Archetype: Spatial Obsidian Glass</span>
+            <span class="tag">Inspiration: Apple VisionOS / Perplexity Pro / Cosmos</span>
+            <span class="tag">Theme: Executive Strategic Governance</span>
+            <span class="tag" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.4);">Iridescent Glow: #c084fc & #38bdf8</span>
+          </div>
+        </div>
+        <a href="/stitch_assets/spatial_obsidian_ui_1792218010523.jpg" target="_blank" class="zoom-btn">
+          Open Full-Res Mockup ↗
+        </a>
+      </div>
+      <div class="image-viewer">
+        <div class="image-viewer-toolbar">
+          <span>PREVIEW: Spatial Glassmorphic Multi-Agent Governance & Knowledge Organism</span>
+          <span>Scroll to inspect complete layout ↓</span>
+        </div>
+        <div class="image-container">
+          <img src="/stitch_assets/spatial_obsidian_ui_1792218010523.jpg" alt="Spatial Obsidian Glass Console">
+        </div>
+      </div>
+    <!-- Screen 9: Aetheris Swarm Studio (Stitch Exploration) -->
+    <div id="screen-9" class="screen-panel">
+      <div class="meta-card">
+        <div class="meta-info">
+          <h2>9. Aetheris Swarm Studio (Google Stitch Mockup Exploration)</h2>
+          <p>
+            The mission-control command center prototype generated during initial Google Stitch exploration before selecting the Qronos AI Agent Scheduler template. Features multi-agent handoff pipeline, dark command HUD, and synthetic project metrics.
+          </p>
+          <div class="meta-tags">
+            <span class="tag">Source: Google Stitch</span>
+            <span class="tag">Status: Pre-Qronos Concept</span>
+            <span class="tag">Dimensions: 2560 × 2938</span>
+          </div>
+        </div>
+        <a href="/stitch_assets/stitch_screen1_orchestration.png" target="_blank" class="zoom-btn">
+          Open Full-Res (2560px) ↗
+        </a>
+      </div>
+      <div class="image-viewer">
+        <div class="image-viewer-toolbar">
+          <span>PREVIEW: Aetheris Swarm Studio (Stitch Prototype)</span>
+          <span>Scroll to inspect complete layout ↓</span>
+        </div>
+        <div class="image-container">
+          <img src="/stitch_assets/stitch_screen1_orchestration.png" alt="Aetheris Swarm Studio (Stitch Mockup)">
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Filmstrip -->
+    <div class="filmstrip">
+      <div class="filmstrip-card active" onclick="showScreen(1)" style="border-color: rgba(168, 85, 247, 0.4);">
+        <div class="filmstrip-thumb">
+          <img src="/qronos_assets/about_schedule.png" alt="Thumb 1">
+        </div>
+        <div class="filmstrip-label" style="color: #c084fc;">1. Qronos Scheduler</div>
+      </div>
+      <div class="filmstrip-card" onclick="showScreen(2)">
+        <div class="filmstrip-thumb">
+          <img src="/stitch_assets/stitch_screen2_topology_cypher.png" alt="Thumb 2">
+        </div>
+        <div class="filmstrip-label">2. Graph Topology & Cypher</div>
+      </div>
+      <div class="filmstrip-card" onclick="showScreen(3)">
+        <div class="filmstrip-thumb">
+          <img src="/stitch_assets/stitch_screen3_evidence_provenance.png" alt="Thumb 3">
+        </div>
+        <div class="filmstrip-label">3. Evidence Provenance</div>
+      </div>
+      <div class="filmstrip-card" onclick="showScreen(4)">
+        <div class="filmstrip-thumb">
+          <img src="/stitch_assets/stitch_screen4_deliverable_signoff.png" alt="Thumb 4">
+        </div>
+        <div class="filmstrip-label">4. RFC Deliverable Sign-Off</div>
+      </div>
+      <div class="filmstrip-card" onclick="showScreen(5)">
+        <div class="filmstrip-thumb">
+          <img src="/stitch_assets/stitch_screen5_fact_freshness.png" alt="Thumb 5">
+        </div>
+        <div class="filmstrip-label">5. Fact Supersession Audit</div>
+      </div>
+      <div class="filmstrip-card" onclick="showScreen(6)">
+        <div class="filmstrip-thumb">
+          <img src="/stitch_assets/tactical_graph_hud_1792217957243.jpg" alt="Thumb 6">
+        </div>
+        <div class="filmstrip-label">6. Tactical Cyber HUD</div>
+      </div>
+      <div class="filmstrip-card" onclick="showScreen(7)">
+        <div class="filmstrip-thumb">
+          <img src="/stitch_assets/swiss_brutalist_ui_1792217982536.jpg" alt="Thumb 7">
+        </div>
+        <div class="filmstrip-label">7. Swiss Neo-Brutalist</div>
+      </div>
+      <div class="filmstrip-card" onclick="showScreen(8)">
+        <div class="filmstrip-thumb">
+          <img src="/stitch_assets/spatial_obsidian_ui_1792218010523.jpg" alt="Thumb 8">
+        </div>
+        <div class="filmstrip-label">8. Spatial Obsidian</div>
+      </div>
+      <div class="filmstrip-card" onclick="showScreen(9)">
+        <div class="filmstrip-thumb">
+          <img src="/stitch_assets/stitch_screen1_orchestration.png" alt="Thumb 9">
+        </div>
+        <div class="filmstrip-label">9. Aetheris Swarm (Stitch)</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showScreen(idx) {
+      document.querySelectorAll('.screen-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.filmstrip-card').forEach(c => c.classList.remove('active'));
+
+      const target = document.getElementById('screen-' + idx);
+      if (target) target.classList.add('active');
+
+      const btns = document.querySelectorAll('.tab-btn');
+      if (btns[idx - 1]) btns[idx - 1].classList.add('active');
+
+      const cards = document.querySelectorAll('.filmstrip-card');
+      if (cards[idx - 1]) cards[idx - 1].classList.add('active');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

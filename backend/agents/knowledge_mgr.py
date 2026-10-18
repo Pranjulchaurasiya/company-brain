@@ -35,7 +35,8 @@ class KnowledgeManagerAgent:
                 tool_id="persist_memory",
                 arguments={
                     "memory_id": "mem_workflow_payments_readiness",
-                    "content": "Payments API v2 is blocked by PAY-104 webhook race condition. Technical owner is Asha Patel. Remediation plan requires 15s distributed mutex on payment intent references."
+                    "content": "Payments API v2 is blocked by PAY-104 webhook race condition. Technical owner is Asha Patel. Remediation plan requires 15s distributed mutex on payment intent references.",
+                    "evidence_ids": ["ev_pay_104_risk", "ev_chat_ownership_transfer", "ev_adr_0042_rationale"]
                 },
                 risk_level="LOW"
             )

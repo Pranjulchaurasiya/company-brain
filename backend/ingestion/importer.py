@@ -82,6 +82,52 @@ def import_all_fixtures(workspace_id: str = DEFAULT_WORKSPACE_ID) -> Dict[str, A
                 MERGE (e)-[:REPORTS_TO]->(mgr)
                 """, {"workspace_id": workspace_id, "emp_id": emp["id"], "mgr_id": emp["reports_to"]})
 
+    # 1.1 Guarantee the 6 canonical Employee-Agent nodes exist with :Employee:Agent labels
+    canonical_employee_agents = [
+        {"id": "emp_chief_of_staff", "name": "Elena Vance", "title": "Chief of Staff", "role": "Coordinator", "department": "Leadership & Strategy"},
+        {"id": "emp_engineer", "name": "Asha Patel", "title": "Staff Software Engineer", "role": "Code Investigator", "department": "Platform Engineering"},
+        {"id": "emp_eng_manager", "name": "Marcus Chen", "title": "Engineering Manager", "role": "Ownership Agent", "department": "Platform Engineering"},
+        {"id": "emp_knowledge_mgr", "name": "Sophia Wu", "title": "Knowledge Manager", "role": "Knowledge Agent", "department": "Technical Operations"},
+        {"id": "emp_reviewer", "name": "Dr. Aris Thorne", "title": "Reviewer", "role": "Reviewer", "department": "Quality & Verification"},
+        {"id": "emp_execution_agent", "name": "Jordan Bell", "title": "Execution Agent", "role": "Execution Agent", "department": "Engineering Operations"},
+    ]
+    for ag in canonical_employee_agents:
+        run_cypher_merge("""
+        MERGE (a:Employee {workspace_id: $workspace_id, id: $id})
+        ON CREATE SET a.name = $name, a.title = $title, a.role = $role, a.department = $dept, a.status = 'ACTIVE'
+        ON MATCH SET a.name = $name, a.title = $title, a.role = $role
+        """, {
+            "workspace_id": workspace_id,
+            "id": ag["id"],
+            "name": ag["name"],
+            "title": ag["title"],
+            "role": ag["role"],
+            "dept": ag["department"]
+        })
+        run_cypher_merge("""
+        MATCH (a:Employee {workspace_id: $workspace_id, id: $id})
+        SET a:Agent
+        """, {"workspace_id": workspace_id, "id": ag["id"]})
+
+    # Also register role-based Agent nodes as aliases
+    agent_aliases = [
+        ("emp_coordinator", "emp_chief_of_staff", "Coordinator"),
+        ("emp_code_investigator", "emp_engineer", "Code Investigator"),
+        ("emp_ownership_agent", "emp_eng_manager", "Ownership Agent"),
+        ("emp_knowledge_agent", "emp_knowledge_mgr", "Knowledge Agent"),
+    ]
+    for alias_id, target_id, role in agent_aliases:
+        run_cypher_merge("""
+        MERGE (a:Agent {workspace_id: $workspace_id, id: $alias_id})
+        ON CREATE SET a.role = $role, a.target_id = $target_id
+        ON MATCH SET a.role = $role, a.target_id = $target_id
+        """, {"workspace_id": workspace_id, "alias_id": alias_id, "target_id": target_id, "role": role})
+        run_cypher_merge("""
+        MATCH (a:Agent {workspace_id: $workspace_id, id: $alias_id})
+        MATCH (e:Employee {workspace_id: $workspace_id, id: $target_id})
+        MERGE (a)-[:ACTS_FOR]->(e)
+        """, {"workspace_id": workspace_id, "alias_id": alias_id, "target_id": target_id})
+
     # 2. Company Entities (Teams, Projects, Services, Goals, Tasks, Decisions)
     ent_file = FIXTURES_DIR / "company_entities.json"
     if ent_file.exists():
@@ -100,10 +146,10 @@ def import_all_fixtures(workspace_id: str = DEFAULT_WORKSPACE_ID) -> Dict[str, A
         run_cypher_merge("""
         MATCH (e:Employee {workspace_id: $workspace_id})
         MATCH (t:Team {workspace_id: $workspace_id})
-        WHERE (e.department CONTAINS 'Platform' AND t.id = 'team_platform')
-           OR (e.department CONTAINS 'Operations' AND t.id = 'team_operations')
-           OR (e.department CONTAINS 'Technical' AND t.id = 'team_tech_ops')
-           OR (e.department CONTAINS 'Core' AND t.id = 'team_core_systems')
+        WHERE (e.department = 'Platform Engineering' AND t.id = 'team_platform')
+           OR (e.department = 'Operations & Leadership' AND t.id = 'team_operations')
+           OR (e.department = 'Technical Operations' AND t.id = 'team_tech_ops')
+           OR (e.department = 'Core Systems' AND t.id = 'team_core_systems')
         MERGE (e)-[:MEMBER_OF]->(t)
         """, {"workspace_id": workspace_id})
 
@@ -143,6 +189,41 @@ def import_all_fixtures(workspace_id: str = DEFAULT_WORKSPACE_ID) -> Dict[str, A
         MATCH (s:Service {workspace_id: $workspace_id, id: 'svc_payments_settlement'})
         MERGE (p)-[:USES_SERVICE]->(s)
         """, {"workspace_id": workspace_id})
+
+        # Seed Payments core code, PR, and Issue nodes for change room investigation
+        run_cypher_merge("""
+        MERGE (f:File {workspace_id: $workspace_id, id: 'file_payments_redis_client'})
+        ON CREATE SET f.path = 'services/payments/redis_client.py', f.filename = 'redis_client.py',
+                      f.extension = '.py', f.html_url = 'https://github.com/company-synthetic/payments-core/blob/main/services/payments/redis_client.py'
+        ON MATCH SET f.path = 'services/payments/redis_client.py', f.filename = 'redis_client.py',
+                     f.extension = '.py', f.html_url = 'https://github.com/company-synthetic/payments-core/blob/main/services/payments/redis_client.py'
+        """, {"workspace_id": workspace_id})
+
+        run_cypher_merge("""
+        MERGE (iss:Issue {workspace_id: $workspace_id, id: 'issue_payments_31'})
+        ON CREATE SET iss.number = 31, iss.title = 'Race condition in payment settlement webhook retry handler (PAY-104)',
+                      iss.source_key = 'PAY-104', iss.state = 'OPEN',
+                      iss.html_url = 'https://github.com/company-synthetic/payments-core/issues/31',
+                      iss.created_at = '2026-10-02T14:22:00Z', iss.assignee_login = 'asha', iss.closed_by_login = null
+        ON MATCH SET iss.number = 31, iss.title = 'Race condition in payment settlement webhook retry handler (PAY-104)',
+                     iss.source_key = 'PAY-104', iss.state = 'OPEN',
+                     iss.html_url = 'https://github.com/company-synthetic/payments-core/issues/31'
+        """, {"workspace_id": workspace_id})
+
+        run_cypher_merge("""
+        MERGE (pr:PullRequest {workspace_id: $workspace_id, id: 'pr_payments_42'})
+        ON CREATE SET pr.number = 42, pr.title = 'Implement Redis distributed mutex lock for transaction settlement (Fixes #31)',
+                      pr.state = 'MERGED', pr.is_merged = true, pr.author_login = 'asha',
+                      pr.created_at = '2026-10-03T11:00:00Z', pr.merged_at = '2026-10-04T15:30:00Z',
+                      pr.html_url = 'https://github.com/company-synthetic/payments-core/pull/42',
+                      pr.body = 'Implements ADR-0042 idempotency lock with 5s Redis mutex. Fixes #31'
+        ON MATCH SET pr.number = 42, pr.title = 'Implement Redis distributed mutex lock for transaction settlement (Fixes #31)',
+                     pr.state = 'MERGED', pr.is_merged = true, pr.author_login = 'asha',
+                     pr.html_url = 'https://github.com/company-synthetic/payments-core/pull/42',
+                     pr.body = 'Implements ADR-0042 idempotency lock with 5s Redis mutex. Fixes #31'
+        """, {"workspace_id": workspace_id})
+
+
 
         for goal in entities.get("goals", []):
             run_cypher_merge("""
@@ -214,6 +295,55 @@ def import_all_fixtures(workspace_id: str = DEFAULT_WORKSPACE_ID) -> Dict[str, A
                 MATCH (e:Employee {workspace_id: $workspace_id, id: $emp_id})
                 MERGE (d)-[:MADE_BY]->(e)
                 """, {"workspace_id": workspace_id, "dec_id": dec["id"], "emp_id": dec["decided_by"]})
+
+        # Connect Payments core code, PR, Issue, Employee, and Decision
+        run_cypher_merge("""
+        MATCH (s:Service {workspace_id: $workspace_id, id: 'svc_payments_settlement'})
+        MATCH (f:File {workspace_id: $workspace_id, id: 'file_payments_redis_client'})
+        MERGE (s)-[:HAS_FILE]->(f)
+        """, {"workspace_id": workspace_id})
+
+        run_cypher_merge("""
+        MATCH (s:Service {workspace_id: $workspace_id, id: 'svc_payments_settlement'})
+        MATCH (pr:PullRequest {workspace_id: $workspace_id, id: 'pr_payments_42'})
+        MERGE (s)-[:HAS_PULL_REQUEST]->(pr)
+        """, {"workspace_id": workspace_id})
+
+        run_cypher_merge("""
+        MATCH (s:Service {workspace_id: $workspace_id, id: 'svc_payments_settlement'})
+        MATCH (iss:Issue {workspace_id: $workspace_id, id: 'issue_payments_31'})
+        MERGE (s)-[:HAS_ISSUE]->(iss)
+        """, {"workspace_id": workspace_id})
+
+        run_cypher_merge("""
+        MATCH (pr:PullRequest {workspace_id: $workspace_id, id: 'pr_payments_42'})
+        MATCH (f:File {workspace_id: $workspace_id, id: 'file_payments_redis_client'})
+        MERGE (pr)-[:TOUCHED_FILE]->(f)
+        """, {"workspace_id": workspace_id})
+
+        run_cypher_merge("""
+        MATCH (pr:PullRequest {workspace_id: $workspace_id, id: 'pr_payments_42'})
+        MATCH (iss:Issue {workspace_id: $workspace_id, id: 'issue_payments_31'})
+        MERGE (pr)-[:RESOLVES_ISSUE]->(iss)
+        """, {"workspace_id": workspace_id})
+
+        run_cypher_merge("""
+        MATCH (e:Employee {workspace_id: $workspace_id, id: 'emp_engineer'})
+        MATCH (pr:PullRequest {workspace_id: $workspace_id, id: 'pr_payments_42'})
+        MERGE (e)-[:OPENED_PR]->(pr)
+        """, {"workspace_id": workspace_id})
+
+        run_cypher_merge("""
+        MATCH (dec:Decision {workspace_id: $workspace_id, id: 'dec_adr_0042'})
+        MATCH (s:Service {workspace_id: $workspace_id, id: 'svc_payments_settlement'})
+        MERGE (dec)-[:AFFECTS_SERVICE]->(s)
+        """, {"workspace_id": workspace_id})
+
+        run_cypher_merge("""
+        MATCH (dec:Decision {workspace_id: $workspace_id, id: 'dec_adr_0042'})
+        MATCH (pr:PullRequest {workspace_id: $workspace_id, id: 'pr_payments_42'})
+        MERGE (dec)-[:REFERENCED_BY_PR]->(pr)
+        """, {"workspace_id": workspace_id})
 
     # 3. Documents (Release Brief & ADR-0042)
     brief_file = FIXTURES_DIR / "payments_release_brief.md"
