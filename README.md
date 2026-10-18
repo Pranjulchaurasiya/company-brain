@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/Pranjulchaurasiya/company-brain">
-    <img src="https://github.com/user-attachments/assets/ec67e5e3-a060-405d-b229-1fe2badcf8ad" alt="Company Brain powered by FalkorDB" width="120" height="120" />
+    <img src="assets/company_brain_logo.png" alt="Company Brain Logo" width="160" style="border-radius: 14px;" />
   </a>
 </p>
 
