@@ -16,12 +16,22 @@ Company Brain: Engineering Change Room
 ### 2. Description *(required)*
 *What problem does your project solve, and who is it for?*
 
+**Option A (Recommended — Scannable & High Impact for Judges):**
 ```text
-Before shipping a major engineering change—like swapping a database or deprecating an API—engineering teams and leaders struggle with the fundamental operating question: “If we make this change, what will be affected, who owns it, who knows it, which architectural decision supports it, and what concrete work must happen next?”
+Company Brain turns FalkorDB into a graph operating system and persistent message bus for an autonomous 6-role multi-agent swarm.
 
-Conventional AI agents fail at this because vector search only retrieves isolated text chunks without relational topology, LLMs hallucinate non-existent citation IDs, and multi-agent frameworks lose their communication traces in ephemeral Python memory.
+When engineering teams propose a major change (like swapping a database or deprecating an API), they struggle to know: "What will break, who owns it, which ADR supports it, and what work must happen next?" Conventional AI fails here due to flat vector search, hallucinated citations, and lost in-memory state.
 
-Company Brain solves this for engineering leaders, staff engineers, and cross-functional software teams by turning FalkorDB into a company operating system and persistent message bus. A 6-role multi-agent swarm (Coordinator, Code Investigator, Ownership Agent, Knowledge Agent, Reviewer, and Execution Agent) investigates proposed changes by traversing connected services, code files, pull requests, issues, active technical owners, and architecture decision records (ADRs). Unsupported claims are rejected by an automated provenance gate, active ownership dynamically updates via fact supersession, and every investigation produces a real, accountable follow-up Task stored directly in the graph.
+How Company Brain Solves It:
+• 🧠 FalkorDB as Swarm Bus: Zero in-memory queues — agents coordinate exclusively through persisted (:AgentMessage) graph nodes.
+• 🛡️ Provable Provenance Gate: Rejects hallucinations via strict Claim → Fact → Evidence → Source (#L locators) verification.
+• 🔄 Live Operational Freshness: Dynamic ownership resolution via temporal fact supersession (SUPERSEDES).
+• ⚡ Actionable Work Deliverables: Persists concrete, verified follow-up (:Task) entities directly into FalkorDB.
+```
+
+**Option B (Ultra-Short / Single Paragraph Pitch):**
+```text
+Company Brain turns FalkorDB into a graph operating system and persistent message bus for an autonomous 6-agent swarm investigating proposed software changes. When an engineer proposes a change, the swarm traverses connected services, code files, PRs, active owners, and ADRs in FalkorDB, validates claims against a 4-tier provenance gate, and creates real, accountable follow-up tasks in the graph.
 ```
 
 ---
