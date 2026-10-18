@@ -49,10 +49,10 @@ https://github.com/Pranjulchaurasiya/company-brain
 ---
 
 ### 5. Demo video *(required)*
-*YouTube video demo link (public or unlisted):*
+*YouTube or Loom video demo link (public or unlisted):*
 
 ```text
-[PASTE YOUR YOUTUBE VIDEO LINK HERE]
+https://www.loom.com/share/25e8bc95d24447d2b78a268392c646a5
 ```
 
 > **Recommended 3-5 Minute Video Recording Outline:**

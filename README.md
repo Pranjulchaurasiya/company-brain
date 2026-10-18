@@ -26,6 +26,9 @@
 <br />
 
 <p align="center">
+  <a href="https://www.loom.com/share/25e8bc95d24447d2b78a268392c646a5" target="_blank" style="margin: 0 8px;">
+    <img src="https://img.shields.io/badge/Demo%20Video-Watch%20on%20Loom-5C5CFF?style=for-the-badge&logo=loom&logoColor=white" alt="Loom Demo Video" height="28" />
+  </a>
   <a href="https://discord.com/invite/Y2mMT9VdMy" target="_blank" style="margin: 0 8px;">
     <img src="https://img.shields.io/badge/Discord-FalkorDB%20Community-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="FalkorDB Discord" height="28" />
   </a>
@@ -36,6 +39,13 @@
     <img src="https://img.shields.io/badge/Blog%20Post-Read%20Story-violet?style=for-the-badge&logo=medium&logoColor=white" alt="Blog Post" height="28" />
   </a>
 </p>
+
+<p align="center">
+  <a href="https://www.loom.com/share/25e8bc95d24447d2b78a268392c646a5" target="_blank">
+    <img src="https://cdn.loom.com/sessions/thumbnails/25e8bc95d24447d2b78a268392c646a5-with-play.gif" alt="Company Brain Video Demo Walkthrough" width="700" style="border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.2);" />
+  </a>
+</p>
+<p align="center" style="color: grey;"><i>▶️ Click the player above to watch the complete end-to-end video walkthrough on Loom.</i></p>
 
 ---
 
@@ -57,6 +67,7 @@ Unlike conventional AI tools that rely on flat vector databases or fragile in-me
 
 ## 📖 Table of Contents
 
+- [🎬 Video Demo & Walkthrough (Loom)](#-video-demo--walkthrough-loom)
 - [✨ Key Features](#-key-features)
 - [🏛️ Multi-Agent Swarm Architecture](#️-multi-agent-swarm-architecture)
 - [💬 FalkorDB Agent Message Bus](#-falkordb-agent-message-bus)
@@ -320,16 +331,13 @@ backend/tests/test_supersession_and_memory.py ...........               [100%]
 
 ---
 
-## 📚 Architectural Documents
+## 📚 Documentation & Specifications
 
-- 📄 [PRD.md](PRD.md) — Product requirements and scope
-- 🏗️ [ARCHITECTURE.md](ARCHITECTURE.md) — Multi-agent system architecture
+- 🏗️ [ARCHITECTURE.md](ARCHITECTURE.md) — Multi-agent system architecture & design
 - 📊 [DATA_MODEL.md](DATA_MODEL.md) — FalkorDB schema, node labels, and relationships
 - 👥 [AGENTS.md](AGENTS.md) — Employee roles, contracts, and collaboration protocol
-- ⚖️ [RULES.md](RULES.md) — Operating constraints and provenance rules
-- 🎯 [EVALUATION.md](EVALUATION.md) — Hackathon acceptance scenarios and pass/fail criteria
-- 📝 [BLOG_POST.md](BLOG_POST.md) — Publication-ready blog post for hackathon side prize
-- 📋 [SUBMISSION.md](SUBMISSION.md) — Step-by-step hackathon submission form answers
+- 📝 [BLOG_POST.md](BLOG_POST.md) — Technical deep-dive blog post (Medium / Dev.to)
+- 📋 [SUBMISSION.md](SUBMISSION.md) — Complete WeMakeDevs Graph Hacks submission guide
 
 ---
 
