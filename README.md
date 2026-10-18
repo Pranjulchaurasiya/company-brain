@@ -105,6 +105,10 @@ Unlike conventional AI tools that rely on flat vector databases or fragile in-me
 
 ## 🏛️ Multi-Agent Swarm Architecture
 
+<p align="center">
+  <img src="assets/company_brain_architecture.png" alt="Company Brain Multi-Agent Swarm Architecture" width="850" style="border-radius: 10px; border: 1px solid #e2e8f0; box-shadow: 0 4px 16px rgba(0,0,0,0.06);" />
+</p>
+
 ```text
 User Proposes Change: "Replace Redis with Valkey in the Payments service."
        ↓
