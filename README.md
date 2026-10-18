@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/Pranjulchaurasiya/company-brain">
-    <img src="https://raw.githubusercontent.com/falkordb/falkordb/master/docs/images/falkordb_logo.png" alt="Company Brain powered by FalkorDB" width="180" />
+    <img src="https://github.com/user-attachments/assets/ec67e5e3-a060-405d-b229-1fe2badcf8ad" alt="Company Brain powered by FalkorDB" width="120" height="120" />
   </a>
 </p>
 
@@ -35,17 +35,17 @@
   <a href="https://www.wemakedevs.org/hackathons/falkordb" target="_blank" style="margin: 0 8px;">
     <img src="https://img.shields.io/badge/WeMakeDevs-Graph%20Hacks%202026-ff0055?style=for-the-badge&logo=target&logoColor=white" alt="Graph Hacks Hackathon" height="28" />
   </a>
-  <a href="https://github.com/Pranjulchaurasiya/company-brain/blob/master/BLOG_POST.md" style="margin: 0 8px;">
-    <img src="https://img.shields.io/badge/Blog%20Post-Read%20Story-violet?style=for-the-badge&logo=medium&logoColor=white" alt="Blog Post" height="28" />
+  <a href="https://medium.com/@pranjulofficial01/building-an-autonomous-company-brain-how-we-turned-falkordb-into-a-shared-operating-system-68bee7595c16" target="_blank" style="margin: 0 8px;">
+    <img src="https://img.shields.io/badge/Medium-Read%20Blog%20Post-12100E?style=for-the-badge&logo=medium&logoColor=white" alt="Medium Blog Post" height="28" />
   </a>
 </p>
 
 <p align="center">
   <a href="https://www.loom.com/share/25e8bc95d24447d2b78a268392c646a5" target="_blank">
-    <img src="https://cdn.loom.com/sessions/thumbnails/25e8bc95d24447d2b78a268392c646a5-with-play.gif" alt="Company Brain Video Demo Walkthrough" width="700" style="border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.2);" />
+    <img src="https://img.shields.io/badge/▶_Watch_Interactive_Demo-Loom_Walkthrough-5C5CFF?style=for-the-badge&logo=loom&logoColor=white" alt="Watch Loom Demo Walkthrough" height="42" />
   </a>
 </p>
-<p align="center" style="color: grey;"><i>▶️ Click the player above to watch the complete end-to-end video walkthrough on Loom.</i></p>
+<p align="center" style="color: grey;"><i>▶️ Click the button above to watch the complete end-to-end video walkthrough on Loom.</i></p>
 
 ---
 
