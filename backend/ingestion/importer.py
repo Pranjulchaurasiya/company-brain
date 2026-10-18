@@ -591,3 +591,9 @@ def import_all_fixtures(workspace_id: str = DEFAULT_WORKSPACE_ID) -> Dict[str, A
 
     logger.info(f"Ingestion completed successfully for workspace '{workspace_id}'. Stats: {stats}")
     return stats
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+    print("Running fixture import...")
+    res = import_all_fixtures()
+    print("Import finished! Stats:", res)

@@ -1,15 +1,36 @@
 import logging
 import falkordb
 from typing import Dict, Any, List, Optional
-from backend.config import FALKORDB_HOST, FALKORDB_PORT, FALKORDB_GRAPH_NAME
+from backend.config import (
+    FALKORDB_HOST,
+    FALKORDB_PORT,
+    FALKORDB_GRAPH_NAME,
+    FALKORDB_PASSWORD,
+    FALKORDB_USERNAME,
+    FALKORDB_SSL,
+    FALKORDB_URL,
+)
 
 logger = logging.getLogger("company_brain.db")
 
 class FalkorDBClient:
-    def __init__(self, host: str = FALKORDB_HOST, port: int = FALKORDB_PORT, graph_name: str = FALKORDB_GRAPH_NAME):
+    def __init__(
+        self,
+        host: str = FALKORDB_HOST,
+        port: int = FALKORDB_PORT,
+        graph_name: str = FALKORDB_GRAPH_NAME,
+        password: Optional[str] = FALKORDB_PASSWORD,
+        username: Optional[str] = FALKORDB_USERNAME,
+        ssl: bool = FALKORDB_SSL,
+        url: Optional[str] = FALKORDB_URL,
+    ):
         self.host = host
         self.port = port
         self.graph_name = graph_name
+        self.password = password
+        self.username = username
+        self.ssl = ssl
+        self.url = url
         self._db: Optional[falkordb.FalkorDB] = None
         self._graph: Optional[falkordb.Graph] = None
 
@@ -19,8 +40,18 @@ class FalkorDBClient:
             last_err = None
             for attempt in range(5):
                 try:
-                    logger.info(f"Connecting to FalkorDB at {self.host}:{self.port}, graph: {self.graph_name} (attempt {attempt+1})")
-                    self._db = falkordb.FalkorDB(host=self.host, port=self.port)
+                    logger.info(f"Connecting to FalkorDB at {self.host}:{self.port}, graph: {self.graph_name} (ssl={self.ssl}, attempt {attempt+1})")
+                    if self.url:
+                        self._db = falkordb.FalkorDB(url=self.url)
+                    else:
+                        kwargs = {"host": self.host, "port": self.port}
+                        if self.password:
+                            kwargs["password"] = self.password
+                        if self.username:
+                            kwargs["username"] = self.username
+                        if self.ssl:
+                            kwargs["ssl"] = self.ssl
+                        self._db = falkordb.FalkorDB(**kwargs)
                     self._graph = self._db.select_graph(self.graph_name)
                     # Verify responsive
                     self._graph.query("RETURN 1")
