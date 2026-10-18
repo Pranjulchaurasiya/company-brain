@@ -26,8 +26,8 @@
 <br />
 
 <p align="center">
-  <a href="https://company-brain.onrender.com" target="_blank" style="margin: 0 8px;">
-    <img src="https://img.shields.io/badge/🌐_Live_Demo-company--brain.onrender.com-00C7B7?style=for-the-badge&logo=render&logoColor=white" alt="Live Demo" height="28" />
+  <a href="https://company-brain-gphf.onrender.com/" target="_blank" style="margin: 0 8px;">
+    <img src="https://img.shields.io/badge/🌐_Live_Demo-company--brain--gphf.onrender.com-00C7B7?style=for-the-badge&logo=render&logoColor=white" alt="Live Demo" height="28" />
   </a>
   <a href="https://www.loom.com/share/25e8bc95d24447d2b78a268392c646a5" target="_blank" style="margin: 0 8px;">
     <img src="https://img.shields.io/badge/Demo%20Video-Watch%20on%20Loom-5C5CFF?style=for-the-badge&logo=loom&logoColor=white" alt="Loom Demo Video" height="28" />
@@ -44,8 +44,8 @@
 </p>
 
 <p align="center">
-  <a href="https://company-brain.onrender.com" target="_blank" style="margin-right: 12px;">
-    <img src="https://img.shields.io/badge/🚀_Open_Live_App-company--brain.onrender.com-00C7B7?style=for-the-badge&logo=render&logoColor=white" alt="Open Live App" height="42" />
+  <a href="https://company-brain-gphf.onrender.com/" target="_blank" style="margin-right: 12px;">
+    <img src="https://img.shields.io/badge/🚀_Open_Live_App-company--brain--gphf.onrender.com-00C7B7?style=for-the-badge&logo=render&logoColor=white" alt="Open Live App" height="42" />
   </a>
   <a href="https://www.loom.com/share/25e8bc95d24447d2b78a268392c646a5" target="_blank">
     <img src="https://img.shields.io/badge/▶_Watch_Interactive_Demo-Loom_Walkthrough-5C5CFF?style=for-the-badge&logo=loom&logoColor=white" alt="Watch Loom Demo Walkthrough" height="42" />
@@ -175,7 +175,7 @@ If an affected entity or decision cannot be mathematically proven through graph 
 
 The production Company Brain application is deployed live on Render connected to FalkorDB Cloud:
 
-> 🚀 **Direct Live Application URL:** **[https://company-brain.onrender.com](https://company-brain.onrender.com)**
+> 🚀 **Direct Live Application URL:** **[https://company-brain-gphf.onrender.com/](https://company-brain-gphf.onrender.com/)**
 
 - **Zero Setup or Account Required**: Pre-loaded with synthetic enterprise graph fixtures (Payments, Auth, Notification services, employees, and ADRs) for instant 1-click evaluation.
 - **Zero OAuth / No Login Barrier**: Direct, frictionless access to the Engineering Change Room, 3D Graph Topology Visualizer, and Multi-Agent Swarm execution logs.

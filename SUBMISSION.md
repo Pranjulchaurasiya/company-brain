@@ -68,7 +68,7 @@ https://www.loom.com/share/25e8bc95d24447d2b78a268392c646a5
 
 ### 6. Live demo or deployment
 ```text
-https://company-brain.onrender.com
+https://company-brain-gphf.onrender.com/
 ```
 *(If evaluating locally or in an offline environment, complete 1-click reproduction instructions are provided in the repository README: `docker run -d -p 6380:6379 falkordb/falkordb:latest`, seed with `python -m backend.ingestion.importer`, and start `uvicorn backend.main:app` — zero login, zero OAuth, 100% pre-seeded).*
 
